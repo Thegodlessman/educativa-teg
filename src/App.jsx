@@ -1,12 +1,11 @@
 import './App.css'
-import AlertExample from './components/alert'
-
+import NavbarExample from './components/Navbar/Navbar.jsx'
 
 function App() {
 
   return (
     <>
-      <AlertExample></AlertExample>
+      <NavbarExample></NavbarExample>
     </>
   )
 }
