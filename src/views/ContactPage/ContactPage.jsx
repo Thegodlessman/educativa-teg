@@ -1,13 +1,13 @@
 import NavBar from "../../components/Navbar/Navbar";
 
-function LandingPage(){
-    const name ='Educativa';
+function ContactPage(){
+    const name ='Contacto';
     return(
         <>
             <NavBar name={name}/>
-            <h1>Estas en la vista inicial</h1>
+            <h1>Estas en la vista contacto</h1>
         </>
     )
 }
 
-export default LandingPage;
+export default ContactPage;
