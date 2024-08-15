@@ -1,11 +1,17 @@
 import './App.css'
-import NavbarExample from './components/Navbar/Navbar.jsx'
+import	{ BrowserRouter as Router, Routes, Route } from "react-router-dom"
+import LandingPage from './views/LandingPage/LandingPage'
 
 function App() {
 
   return (
     <>
-      <NavbarExample></NavbarExample>
+      <Router>
+        <Routes>
+          <Route exact path="/" element={<LandingPage/>}/>
+        </Routes>
+      </Router>
+
     </>
   )
 }
