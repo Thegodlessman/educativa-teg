@@ -4,7 +4,7 @@ function ContactPage(){
     return(
         <>
             <NavBar/>
-            <h1>Estas en la vista contacto</h1>
+            
         </>
     )
 }
