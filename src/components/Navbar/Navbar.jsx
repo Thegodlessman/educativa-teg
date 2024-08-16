@@ -26,7 +26,7 @@ function NavBar(registrado){
     // const handleClick = () => setLoading(true);
 
     return (
-        <Navbar expand="lg" className="w-full" >
+        <Navbar expand="lg" className="w-full bg-light" >
             <Navbar.Brand className='fs-3 fw-bolder text-decoration-none me-5 ms-4 title'  href="/">
                 <img src='../../../src/assets/logo.png' width="50" height="50">
                 </img> 
@@ -35,8 +35,9 @@ function NavBar(registrado){
             <Navbar.Toggle aria-controls="basic-navbar-nav" className='me-4' />
             <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="me-auto">
-                    <Nav.Link href="/">Quienes Somos</Nav.Link>
-                    <Nav.Link href="/contact">Contacto</Nav.Link>
+                    <Nav.Link href="/contact">Quienes Somos</Nav.Link>
+                    <Nav.Link href="/">Otra cosa</Nav.Link>
+
                     <NavDropdown title="Más" id="basic-nav-dropdown">
                     <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
                     <NavDropdown.Item href="#action/3.2">
