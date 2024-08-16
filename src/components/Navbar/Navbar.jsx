@@ -1,19 +1,39 @@
 import Container from 'react-bootstrap/Container';
+import Button  from 'react-bootstrap/Button';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 
-function NavBar({name}){
+import { useEffect, useState } from 'react';
+
+function NavBar(registrado){
+    // const [isLoading, setLoading] = useState(false);
+    
+    // useEffect(()=>{
+    //     function simulateNetworkRequest() {
+    //         return new Promise((resolve) => setTimeout(resolve, 2000));
+    //     }
+
+    //     if(isLoading){
+    //         simulateNetworkRequest().then(()=>{
+    //             setLoading(false);
+    //         });
+    //     }
+
+
+    // },[isLoading]);
+
+    // const handleClick = () => setLoading(true);
+
     return (
-        <Navbar expand="lg" className="w-full " >
+        <Navbar expand="lg" className="w-full" >
             <Navbar.Brand className='fs-3 fw-bolder text-decoration-none me-5 ms-4 title'  href="/">
                 <img src='../../../src/assets/logo.png' width="50" height="50">
                 </img> 
-                {name}
+                Educativa
             </Navbar.Brand>
-            <Container className=''>
-                <Navbar.Toggle aria-controls="basic-navbar-nav" />
-                <Navbar.Collapse id="basic-navbar-nav">
+            <Navbar.Toggle aria-controls="basic-navbar-nav" className='me-4' />
+            <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="me-auto">
                     <Nav.Link href="/">Quienes Somos</Nav.Link>
                     <Nav.Link href="/contact">Contacto</Nav.Link>
@@ -29,10 +49,11 @@ function NavBar({name}){
                     </NavDropdown.Item>
                     </NavDropdown>
                 </Nav>
-                </Navbar.Collapse>
-            </Container>
-                
-            
+                <div className=''>
+                    <Button className='btn me-2 rounded-4 p-2 text-decoration-none text-dark' variant='link'>Regístrate</Button>
+                    <Button className='btn btn-dark me-4 rounded-4 p-2'>Iniciar Sesión</Button>
+                </div>
+            </Navbar.Collapse>
         </Navbar>
     )
 }
