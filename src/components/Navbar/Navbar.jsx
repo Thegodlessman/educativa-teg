@@ -7,9 +7,13 @@ import './NavBar.css'
 
 function NavBar({name}){
     return (
-        <Navbar expand="lg" className="bg-body-tertiary" >
+        <Navbar expand="lg" className="w-full " >
+            <Navbar.Brand className='fs-3 fw-bolder text-decoration-none me-5 ms-4 title'  href="/">
+                <img src='../../../src/assets/logo.png' width="50" height="50">
+                </img> 
+                {name}
+            </Navbar.Brand>
             <Container className=''>
-                <Navbar.Brand className='fs-1 text-decoration-none'  href="/">{name}</Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="me-auto">
@@ -29,6 +33,8 @@ function NavBar({name}){
                 </Nav>
                 </Navbar.Collapse>
             </Container>
+                
+            
         </Navbar>
     )
 }
