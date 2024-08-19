@@ -46,7 +46,7 @@ function LoginForm (){
                     </Form.Group>
                     <a className="forgotPass-link" href="/">¿Has olvidado tu contraseña?</a>
 
-                    <Button type="submit" className="w-100 p-3 rounded-4 mt-4 fw-bold login-btn">
+                    <Button className="btn w-100 p-3 rounded-4 mt-4 fw-bold login-btn btn-success">
                     Iniciar Sesión
                     </Button>
                 </Form>

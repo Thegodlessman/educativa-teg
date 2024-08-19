@@ -18,3 +18,7 @@
     background-color: rgba(21,	115, 71, 0.75);
     color: white;
 }
+
+.input-login:active{
+    background-color: red;
+}

@@ -56,8 +56,8 @@ function NavBar(registrado){
                     </NavDropdown>
                 </Nav>
                 <div className=''>
-                    <Button className='btn me-2 rounded-4 p-2 text-decoration-none text-dark' variant='link'>Regístrate</Button>
-                    <Button className='btn btn-success me-4 rounded-4 p-2' onClick={redirectLogin}>Iniciar Sesión</Button>
+                    <Button className='btn me-2 rounded-4 pe-3 ps-3 text-decoration-none text-dark' variant='link'>Regístrate</Button>
+                    <Button className='btn btn-success me-4 rounded-4 pe-3 ps-3' onClick={redirectLogin}>Iniciar Sesión</Button>
                 </div>
             </Navbar.Collapse>
         </Navbar>
