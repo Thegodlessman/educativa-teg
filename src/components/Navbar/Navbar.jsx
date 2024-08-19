@@ -5,6 +5,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 
 import { useEffect, useState } from 'react';
+import { redirect } from 'react-router-dom';
 
 function NavBar(registrado){
     // const [isLoading, setLoading] = useState(false);
@@ -25,9 +26,13 @@ function NavBar(registrado){
 
     // const handleClick = () => setLoading(true);
 
+    const redirectLogin = () => {
+        location.href = "/login"
+    }
+
     return (
         <Navbar expand="lg" className="w-full bg-light" >
-            <Navbar.Brand className='fs-3 fw-bolder text-decoration-none me-5 ms-4 title'  href="/">
+            <Navbar.Brand className='fs-3 fw-bolder text-decoration-none me-5 ms-4 logo-title'  href="/">
                 <img src='../../../src/assets/logo.png' width="50" height="50">
                 </img> 
                 Educativa
@@ -52,7 +57,7 @@ function NavBar(registrado){
                 </Nav>
                 <div className=''>
                     <Button className='btn me-2 rounded-4 p-2 text-decoration-none text-dark' variant='link'>Regístrate</Button>
-                    <Button className='btn btn-dark me-4 rounded-4 p-2'>Iniciar Sesión</Button>
+                    <Button className='btn btn-dark me-4 rounded-4 p-2' onClick={redirectLogin}>Iniciar Sesión</Button>
                 </div>
             </Navbar.Collapse>
         </Navbar>

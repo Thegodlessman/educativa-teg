@@ -1,3 +1,5 @@
-.title{
+.logo-title{
     font-family: "Nunito", sans-serif;
+    font-weight: bolder;
+    cursor: pointer;
 }
