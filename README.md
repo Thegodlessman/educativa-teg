@@ -10,3 +10,5 @@ Currently, two official plugins are available:
 
 
 https://supertokens-com.translate.goog/blog/building-a-login-screen-with-react-and-bootstrap?_x_tr_sl=auto&_x_tr_tl=es&_x_tr_hl=es
+
+pesticide extension
