@@ -56,7 +56,10 @@ function LoginForm (){
                     </Button>
 
                     <div className="login-link-container">
-                        <span>¿Aún no tienes una cuenta? <a className="text-decoration-none forgotPass-link" href="/">Registrate</a></span>
+                        <span>¿Aún no tienes una cuenta? <a className="text-decoration-none forgotPass-link" href="/register">
+                        Registrate
+                        </a></span>
+                        
                         <a className="text-decoration-none forgotPass-link" href="/">¿Has olvidado tu contraseña?</a>
                     </div>
 

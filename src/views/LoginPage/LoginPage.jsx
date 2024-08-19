@@ -4,7 +4,9 @@ import LoginForm from "../../components/LoginForm/LoginForm.jsx"
 
 function LoginPage (){
 
-    <LoginForm/>
+    return(
+        <LoginForm/>
+    )
 
 
 }
