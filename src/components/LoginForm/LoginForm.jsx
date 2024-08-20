@@ -58,7 +58,6 @@ function LoginForm() {
                                 onChange={(e) => setEmail(e.target.value)}
                                 isInvalid={!!errors.email}
                             />
-                            <Form.Control.Feedback type="invalid">{errors.email}</Form.Control.Feedback>
                         </Form.Group>
 
                         <Form.Group className="mb-3" controlId="formBasicPassword">
@@ -69,9 +68,6 @@ function LoginForm() {
                                 onChange={(e) => setPassword(e.target.value)}
                                 isInvalid={!!errors.password}
                             />
-                            <Form.Control.Feedback type="invalid">
-                                {errors.password}
-                            </Form.Control.Feedback>
                         </Form.Group>
 
                         <Button type="submit" className="btn w-100 p-3 rounded-4 mt-4 mb-3 fw-bold login-btn btn-success">

@@ -1,0 +1,14 @@
+.name-lastname-container{
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+}  
+
+.register-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100vw;
+    height: 90vh;
+}
