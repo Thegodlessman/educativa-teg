@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Form, Button, Container, Row, Col, Alert } from 'react-bootstrap';
+import axios from "axios";
 
 import './LoginForm.css';
 
@@ -7,6 +8,7 @@ function LoginForm() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [errors, setErrors] = useState({});
+    const [loginError, setLoginError] = useState('');
 
     const validateForm = () => {
         const newErrors = {};
@@ -17,16 +19,24 @@ function LoginForm() {
         return newErrors;
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
         const formErrors = validateForm();
+
         if (Object.keys(formErrors).length > 0) {
             setErrors(formErrors);
         } else {
             setErrors({});
-            console.log('Login attempted with:', { email, password });
-            console.log(setErrors)
-            // Aquí es donde normalmente enviarías la solicitud al servidor
+            
+            try{
+                const response = await axios.post('http://localhost:4555/login', { email, password });
+                console.log('Login successful:', response.data);
+
+                window.location.href = "/profile";
+            }catch(error){
+                console.error('Login failed:', error.response.data);
+                setLoginError(error.response.data.message);
+            }
         }
     };
 
@@ -47,6 +57,11 @@ function LoginForm() {
                             {Object.values(errors).map((error, index) => (
                                 <div key={index}>{error}</div>
                             ))}
+                        </Alert>
+                    )}
+                    {loginError && (
+                        <Alert variant="danger">
+                            {loginError}
                         </Alert>
                     )}
                     <Form className="text-center" onSubmit={handleSubmit}>
