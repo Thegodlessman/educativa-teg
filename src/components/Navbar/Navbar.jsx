@@ -1,30 +1,10 @@
-import Container from 'react-bootstrap/Container';
 import Button  from 'react-bootstrap/Button';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 
-import { useEffect, useState } from 'react';
-import { redirect } from 'react-router-dom';
+function NavBar(){
 
-function NavBar(registrado){
-    // const [isLoading, setLoading] = useState(false);
-    
-    // useEffect(()=>{
-    //     function simulateNetworkRequest() {
-    //         return new Promise((resolve) => setTimeout(resolve, 2000));
-    //     }
-
-    //     if(isLoading){
-    //         simulateNetworkRequest().then(()=>{
-    //             setLoading(false);
-    //         });
-    //     }
-
-
-    // },[isLoading]);
-
-    // const handleClick = () => setLoading(true);
 
     const redirectLogin = () => {
         location.href = "/login"
@@ -37,8 +17,7 @@ function NavBar(registrado){
     return (
         <Navbar expand="lg" className="w-full bg-light" >
             <Navbar.Brand className='fs-3 fw-bolder text-decoration-none me-5 ms-4 logo-title'  href="/">
-                <img className="me-1" src='../../../src/assets/logo.png' width="50" height="50">
-                </img> 
+                <img className="me-1" src='../../../src/assets/logo.png' width="50" height="50"/>
                 Educativa
             </Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" className='me-4' />

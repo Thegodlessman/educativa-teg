@@ -1,12 +1,12 @@
 .forgotPass-link{
     font-size: 15px;
     cursor: pointer;
-    color: rgb(133,82,170);
+    color: var(--primary-color);
     font-weight: 500;
 }
 
 .forgotPass-link:hover{
-    color: rgb(142, 106, 168);
+    color: var(--primary-color);
 }
 
 .input-login:focus{
@@ -16,7 +16,7 @@
 }
 
 .login-btn{
-    background-color: #157347;
+    background-color: var(--secondary-color);
     border: none;
 }
 

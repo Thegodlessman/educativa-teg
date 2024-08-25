@@ -1,0 +1,56 @@
+.modal-container_Role {
+    width: 600px;  /* Ajusta el ancho a lo que necesites */
+    padding: 20px;
+    border-radius: 10px;
+    background-color: white;
+}
+
+.modal-header .btn-close {
+    display: none;  /* Oculta el botón de cerrar */
+}
+
+.logo-title {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.button-estudiant_Role {
+    background-color: var(--primary-color); /* Color personalizado */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.button-estudiant_Role:hover {
+    transition: 0.5s;
+    border-radius: 11px;
+    background-color: #5a34a6; /* Color cuando se hace hover */
+}
+
+.button-profesor_Role {
+    background-color: var(--secondary-color); /* Color personalizado */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.button-profesor_Role:hover {
+    transition: 0.5s;
+    border-radius: 11px;
+    background-color: #115e3a; /* Color cuando se hace hover */
+}
+
+.role-selection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.role-image {
+    border-radius: 50%;  /* Opcional: para hacer las imágenes circulares */
+    margin-bottom: 10px;
+}

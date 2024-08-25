@@ -1,3 +1,8 @@
+:root {
+    --primary-color: #8552aa;
+    --secondary-color: #157347;
+}
+
 .logo-title{
     font-family: "Nunito", sans-serif;
     font-weight: bolder;
