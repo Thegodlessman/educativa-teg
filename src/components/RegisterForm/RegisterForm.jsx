@@ -88,7 +88,7 @@ function RegisterForm(){
                             {registerError}
                         </Alert>
                     )}{isRegistered ? (
-                        
+
                         <div className="register-success-animation">
                             {/* Aquí puedes colocar tu animación */}
                             <p>¡Registro exitoso! Redirigiendo...</p>
