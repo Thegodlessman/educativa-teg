@@ -49,9 +49,9 @@ function RegisterForm(){
         } else {
             setErrors({});
             try{
-                console.log(userData)
                 const response = await axios.post('http://localhost:4555/users',userData);
                 console.log(response.data)
+                redirectLogin();
             }catch(error){
                 console.error('Register Failed', error);
                 setRegisterError(error.response.data.message);
@@ -59,6 +59,9 @@ function RegisterForm(){
         }
     };
 
+    const redirectLogin = () =>{
+        location.href = '/login'
+    }
     const redirectHome = () => {
         location.href = "/";
     };
