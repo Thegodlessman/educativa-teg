@@ -30,7 +30,10 @@ function LoginForm() {
             
             try{
                 const response = await axios.post('http://localhost:4555/login', { email, password });
-                console.log('Login successful:', response.data);
+                
+                const {tokenSession, user} = response.data;
+
+                localStorage.setItem('token', tokenSession);
 
                 window.location.href = "/profile";
             }catch(error){
