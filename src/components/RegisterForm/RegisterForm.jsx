@@ -2,6 +2,10 @@ import React, {useState} from "react"
 import {Form, Button, Container, Row, Col, Alert} from 'react-bootstrap'
 import axios from "axios";
 
+import { ping } from 'ldrs'
+
+ping.register()
+
 import './RegisterForm.css'
 
 function RegisterForm(){
@@ -14,6 +18,7 @@ function RegisterForm(){
     const [errors, setErrors] = useState({});
     const [registerError, setRegisterError] = useState('');
     const [isRegistered, setIsRegistered] = useState(false);
+    const [registerSuccess, setRegisterSuccess] = useState(false);
 
     const validateForm = () => {
         const newErrors = {};
@@ -45,19 +50,25 @@ function RegisterForm(){
             return;
         } else {
             setErrors({});
-            try{
-                const response = await axios.post('http://localhost:4555/users',userData);
-                console.log(response.data)
-                setIsRegistered(true);
-                
-                setTimeout(()=>{
-                    redirectLogin();
-                }, 2000)
+            setIsRegistered(true);
+            
+            setTimeout(async() => {
+                try{
+                    const response = await axios.post('http://localhost:4555/users',userData);
+                    console.log(response.data)
+                    
+                    setRegisterSuccess(true);
+                    setTimeout(() => {
+                        redirectLogin()
+                    }, 1000);
+    
+                }catch(error){
+                    console.error('Register Failed', error);
+                    setIsRegistered(false)
+                    setRegisterError(error.response.data.message);
+                }
+            }, 2000);
 
-            }catch(error){
-                console.error('Register Failed', error);
-                setRegisterError(error.response.data.message);
-            }
         }
     };
 
@@ -69,6 +80,7 @@ function RegisterForm(){
     };
 
     return(
+        
         <Container className="register-container">
             <Row className="register-container mt-4">
                 <Col xs={12} md={6}>
@@ -87,15 +99,12 @@ function RegisterForm(){
                         <Alert variant="danger">
                             {registerError}
                         </Alert>
-                    )}{isRegistered ? (
-
-                        <div className="register-success-animation">
-                            {/* Aquí puedes colocar tu animación */}
-                            <p>¡Registro exitoso! Redirigiendo...</p>
-                        </div>
-                    ):(
+                    )}{registerSuccess && (
+                        <Alert variant="success">
+                            Te has registrado exitosamente
+                        </Alert>
+                    )}
                         <Form className="form-container text-center" onSubmit={handleSubmit}>
-
                             <div className="name-lastname-container">
                                 <Form.Group className="w-100 mb-3" controlId="formBasicName">
                                     <Form.Control className="border-secondary border-opacity-50 border-2 p-3 rounded-4 input-login"
@@ -162,10 +171,18 @@ function RegisterForm(){
                                     isInvalid={confirmPassword != password}
                                 />
                             </Form.Group>
-
-                            <Button type="submit" className="btn w-100 p-3 rounded-4 mt-4 mb-3 fw-bold login-btn btn-success">
-                                Crear Cuenta
-                            </Button>
+                            {isRegistered ? (
+                                    <div className='margin-animacion_Register'>
+                                        <l-ping
+                                        size="90"
+                                        speed="3" 
+                                        color="#157347" 
+                                        ></l-ping>
+                                    </div>
+                                ):(<Button type="submit" 
+                                className="btn w-100 p-3 rounded-4 mt-4 mb-3 fw-bold login-btn btn-success"
+                                >Crear Cuenta
+                                </Button>)}
                             
                             <div className="login-link-container">
                                 <span>¿Ya tienes una cuenta? <a className="text-decoration-none forgotPass-link" href="/login">
@@ -174,7 +191,6 @@ function RegisterForm(){
                             </div>
 
                         </Form>
-                    )}
                 </Col>
             </Row>
         </Container>

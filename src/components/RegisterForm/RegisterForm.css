@@ -13,15 +13,6 @@
     height: 95vh;
 }
 
-.register-success-animation {
-    animation: fadeIn 1s ease-in-out;
-    text-align: center;
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: green;
-}
-
-@keyframes fadeIn {
-    0% { opacity: 0; }
-    100% { opacity: 1; }
+.margin-animacion_Register{
+    margin-top: 15px;
 }
