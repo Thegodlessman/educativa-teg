@@ -31,7 +31,7 @@ function RegisterForm(){
         if(!name) newErrors.name = 'Ingrese un nombre, porfavor';
         
         if(!lastName) newErrors.lastName = 'Ingrese un apellido, por favor';
-        
+
         if(!ced_user) newErrors.ced_user = 'Ingrese una cedula, por favor'
 
         if(confirmPassword != password) newErrors.confirmPassword = 'Las contraseñas deben coincidir'
@@ -60,7 +60,7 @@ function RegisterForm(){
                     setRegisterSuccess(true);
                     setTimeout(() => {
                         redirectLogin()
-                    }, 1000);
+                    }, 1500);
     
                 }catch(error){
                     console.error('Register Failed', error);
