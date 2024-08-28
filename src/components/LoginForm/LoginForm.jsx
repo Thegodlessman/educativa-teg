@@ -9,6 +9,7 @@ function LoginForm() {
     const [password, setPassword] = useState('');
     const [errors, setErrors] = useState({});
     const [loginError, setLoginError] = useState('');
+    const [pressButton, setPressButton] = useState(false);
 
     const validateForm = () => {
         const newErrors = {};
@@ -27,19 +28,24 @@ function LoginForm() {
             setErrors(formErrors);
         } else {
             setErrors({});
-            
-            try{
-                const response = await axios.post('http://localhost:4555/login', { email, password });
-                
-                const {tokenSession, user} = response.data;
+            setPressButton(true)
 
-                localStorage.setItem('token', tokenSession);
+            setTimeout(async () => {
+                try{
+                    const response = await axios.post('http://localhost:4555/login', { email, password });
+                    
+                    const {tokenSession} = response.data;
+    
+                    localStorage.setItem('token', tokenSession);
+    
+                    window.location.href = "/profile";
+                }catch(error){
+                    setPressButton(false)
+                    console.error('Login failed:', error.response.data);
+                    setLoginError(error.response.data.message);
+                }
 
-                window.location.href = "/profile";
-            }catch(error){
-                console.error('Login failed:', error.response.data);
-                setLoginError(error.response.data.message);
-            }
+            }, 2000);
         }
     };
 
@@ -88,9 +94,18 @@ function LoginForm() {
                             />
                         </Form.Group>
 
-                        <Button type="submit" className="btn w-100 p-3 rounded-4 mt-4 mb-3 fw-bold login-btn btn-success">
+                        {pressButton ? (
+                            <div className='margin-animacion_Register'>
+                            <l-ping
+                                size="90"
+                                speed="3" 
+                                color="#157347" 
+                            ></l-ping>
+                            </div>):(
+                            <Button type="submit" className="btn w-100 p-3 rounded-4 mt-4 mb-3 fw-bold login-btn btn-success">
                             Iniciar Sesión
-                        </Button>
+                            </Button>
+                        )}
 
                         <div className="login-link-container">
                             <span>¿Aún no tienes una cuenta? <a className="text-decoration-none forgotPass-link" href="/register">
