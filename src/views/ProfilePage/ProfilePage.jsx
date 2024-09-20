@@ -39,7 +39,7 @@ function ProfilePage() {
          setUserId(id_user)
          console.log(newRole)
          const response = await axios.patch(
-            `http://localhost:4555/profile/role/${id_user}`, { id_role: newRole});
+            `http://localhost:4555/profile/role/${id_user}`, { id_rol: newRole});
          console.log('Role updated:', response.data);
 
          localStorage.setItem('token', response.data.tokenSession);

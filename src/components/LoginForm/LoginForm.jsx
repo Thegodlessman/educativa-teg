@@ -5,18 +5,18 @@ import axios from "axios";
 import './LoginForm.css';
 
 function LoginForm() {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [user_email, setEmail] = useState('');
+    const [user_password, setPassword] = useState('');
     const [errors, setErrors] = useState({});
     const [loginError, setLoginError] = useState('');
     const [pressButton, setPressButton] = useState(false);
 
     const validateForm = () => {
         const newErrors = {};
-        if (!email) newErrors.email = 'Ingrese su correo, por favor';
-        else if (!/\S+@\S+\.\S+/.test(email)) newErrors.email = 'El correo electronico no es valido';
-        if (!password) newErrors.password = 'Ingrese su contraseña, por favor';
-        else if (password.length < 6) newErrors.password = 'La contraseña debe tener más de 6 caracteres';
+        if (!user_email) newErrors.user_email = 'Ingrese su correo, por favor';
+        else if (!/\S+@\S+\.\S+/.test(user_email)) newErrors.user_email = 'El correo electronico no es valido';
+        if (!user_password) newErrors.user_password = 'Ingrese su contraseña, por favor';
+        else if (user_password.length < 6) newErrors.user_password = 'La contraseña debe tener más de 6 caracteres';
         return newErrors;
     };
 
@@ -32,7 +32,7 @@ function LoginForm() {
 
             setTimeout(async () => {
                 try{
-                    const response = await axios.post('http://localhost:4555/login', { email, password });
+                    const response = await axios.post('http://localhost:4555/login', { user_email, user_password });
                     
                     const {tokenSession} = response.data;
     
@@ -78,9 +78,9 @@ function LoginForm() {
                             <Form.Control className="border-secondary border-opacity-50 border-2 p-3 rounded-4 input-login"
                                 type="email"
                                 placeholder="Ingrese su correo"
-                                value={email}
+                                value={user_email}
                                 onChange={(e) => setEmail(e.target.value)}
-                                isInvalid={!!errors.email}
+                                isInvalid={!!errors.user_email}
                             />
                         </Form.Group>
 
@@ -88,9 +88,9 @@ function LoginForm() {
                             <Form.Control className="border-2 border-opacity-50 border-secondary p-3 rounded-4 input-login"
                                 type="password"
                                 placeholder="Ingrese su contraseña"
-                                value={password}
+                                value={user_password}
                                 onChange={(e) => setPassword(e.target.value)}
-                                isInvalid={!!errors.password}
+                                isInvalid={!!errors.user_password}
                             />
                         </Form.Group>
 

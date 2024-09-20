@@ -9,11 +9,11 @@ ping.register()
 import './RegisterForm.css'
 
 function RegisterForm(){
-    const [name, setName] = useState('');
-    const [lastName, setLastName] = useState('');
-    const [ced_user, setCed_user] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [user_name, setName] = useState('');
+    const [user_lastname, setLastName] = useState('');
+    const [user_ced, setCed_user] = useState('');
+    const [user_email, setEmail] = useState('');
+    const [user_password, setPassword] = useState('');
     const [confirmPassword, setconfirmPassword] = useState('')
     const [errors, setErrors] = useState({});
     const [registerError, setRegisterError] = useState('');
@@ -22,26 +22,26 @@ function RegisterForm(){
 
     const validateForm = () => {
         const newErrors = {};
-        if (!email) newErrors.email = 'Ingrese su correo, por favor';
-        else if (!/\S+@\S+\.\S+/.test(email)) newErrors.email = 'El correo electronico no es valido';
+        if (!user_email) newErrors.user_email = 'Ingrese su correo, por favor';
+        else if (!/\S+@\S+\.\S+/.test(user_email)) newErrors.user_email = 'El correo electronico no es valido';
 
-        if (!password) newErrors.password = 'Ingrese una contraseña, por favor';
-        else if (password.length < 6) newErrors.password = 'La contraseña debe tener más de 6 caracteres';
+        if (!user_password) newErrors.user_password = 'Ingrese una contraseña, por favor';
+        else if (user_password.length < 6) newErrors.user_password = 'La contraseña debe tener más de 6 caracteres';
 
-        if(!name) newErrors.name = 'Ingrese un nombre, porfavor';
+        if(!user_name) newErrors.user_name = 'Ingrese un nombre, porfavor';
         
-        if(!lastName) newErrors.lastName = 'Ingrese un apellido, por favor';
+        if(!user_lastname) newErrors.user_lastname = 'Ingrese un apellido, por favor';
 
-        if(!ced_user) newErrors.ced_user = 'Ingrese una cedula, por favor'
+        if(!user_ced) newErrors.user_ced = 'Ingrese una cedula, por favor'
 
-        if(confirmPassword != password) newErrors.confirmPassword = 'Las contraseñas deben coincidir'
+        if(confirmPassword != user_password) newErrors.confirmPassword = 'Las contraseñas deben coincidir'
 
         return newErrors;
     };
 
     const handleSubmit = async (event) => {
         const userData = {
-            ced_user, name, lastname: lastName, email, password
+            user_ced, user_name, user_lastname, user_email, user_password
         }
         event.preventDefault();
         const formErrors = validateForm();
@@ -110,8 +110,8 @@ function RegisterForm(){
                                     <Form.Control className="border-secondary border-opacity-50 border-2 p-3 rounded-4 input-login"
                                         type="name"
                                         placeholder="Ingrese su nombre"
-                                        value={name}
-                                        name="name"
+                                        value={user_name}
+                                        name="user_name"
                                         onChange={(e) => setName(e.target.value)}
                                         isInvalid={!!errors.name}
                                     />
@@ -121,8 +121,8 @@ function RegisterForm(){
                                     <Form.Control className="border-secondary border-opacity-50 border-2 p-3 rounded-4 input-login"
                                         type="name"
                                         placeholder="Ingrese su apellido"
-                                        value={lastName}
-                                        name="lastname"
+                                        value={user_lastname}
+                                        name="user_lastname"
                                         onChange={(e) => setLastName(e.target.value)}
                                         isInvalid={!!errors.lastName}
                                     />
@@ -133,8 +133,8 @@ function RegisterForm(){
                                 <Form.Control className="border-secondary border-opacity-50 border-2 p-3 rounded-4 input-login"
                                     type="cedula"
                                     placeholder="Ingrese su cedula"
-                                    value={ced_user}
-                                    name="ced_user"
+                                    value={user_ced}
+                                    name="user_ced"
                                     onChange={(e) => setCed_user(e.target.value)}
                                     isInvalid={!!errors.ced_user}
                                 />
@@ -144,8 +144,8 @@ function RegisterForm(){
                                 <Form.Control className="border-secondary border-opacity-50 border-2 p-3 rounded-4 input-login"
                                     type="email"
                                     placeholder="Ingrese su correo"
-                                    value={email}
-                                    name="email"
+                                    value={user_email}
+                                    name="user_email"
                                     onChange={(e) => setEmail(e.target.value)}
                                     isInvalid={!!errors.email}
                                 />
@@ -155,8 +155,8 @@ function RegisterForm(){
                                 <Form.Control className="border-2 border-opacity-50 border-secondary p-3 rounded-4 input-login"
                                     type="password"
                                     placeholder="Ingrese su contraseña"
-                                    value={password}
-                                    name="password"
+                                    value={user_password}
+                                    name="user_password"
                                     onChange={(e) => setPassword(e.target.value)}
                                     isInvalid={!!errors.password}
                                 />
@@ -168,7 +168,7 @@ function RegisterForm(){
                                     placeholder="Confirme su contraseña"
                                     value={confirmPassword}
                                     onChange={(e) => setconfirmPassword(e.target.value)}
-                                    isInvalid={confirmPassword != password}
+                                    isInvalid={confirmPassword != user_password}
                                 />
                             </Form.Group>
                             {isRegistered ? (
