@@ -16,15 +16,15 @@ function SelectRole({ show, handleClose, handleRoleChange }) {
         try{
             const response = await axios.get(`http://localhost:4555/profile/get/role/${role}`)
 
-            handleSelectRole(response.data.id_role)
+            handleSelectRole(response.data.id_rol)
         }catch(error){
             console.error('Error fetching role ID:', error.response ? error.response.data : error.message);
         }
     }
     // Función para manejar la selección de rol y cerrar el modal
-    const handleSelectRole = (id_role) => {
-        setSelectedRole(id_role);
-        handleRoleChange(id_role);
+    const handleSelectRole = (id_rol) => {
+        setSelectedRole(id_rol);
+        handleRoleChange(id_rol);
         handleClose(); // Cerrar el modal después de seleccionar el rol
     };
 
