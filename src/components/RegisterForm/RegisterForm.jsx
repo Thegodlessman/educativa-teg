@@ -67,7 +67,7 @@ function RegisterForm(){
                     setIsRegistered(false)
                     setRegisterError(error.response.data.message);
                 }
-            }, 2000);
+            }, 1500);
 
         }
     };
