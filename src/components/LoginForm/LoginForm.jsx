@@ -45,7 +45,7 @@ function LoginForm() {
                     setLoginError(error.response.data.message);
                 }
 
-            }, 2000);
+            }, 1500);
         }
     };
 
