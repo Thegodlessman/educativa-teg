@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import jwt_decode from 'jwt-decode';
 import ProfileLanding from '../../components/ProfileLanding/ProfileLanding.jsx';
 import SelectRole from '../../components/SelectRole/SelectRole.jsx';
+import ProfileNav from '../../components/ProfileNav/ProfileNav.jsx';
 import axios from 'axios';
 
 function ProfilePage() {
@@ -48,18 +49,19 @@ function ProfilePage() {
 
          handleClose();
       } catch (error) {
-            console.error('Error updating role:', error.response ? error.response.data : error.message);
+         console.error('Error updating role:', error.response ? error.response.data : error.message);
       }
    };
 
    return (
       <>
-            <ProfileLanding />
-            <SelectRole
-               show={showModal}
-               handleClose={handleClose}
-               handleRoleChange={handleRoleChange}
-            />
+         <ProfileNav/>
+         <ProfileLanding />
+         <SelectRole
+            show={showModal}
+            handleClose={handleClose}
+            handleRoleChange={handleRoleChange}
+         />
       </>
    );
 }
