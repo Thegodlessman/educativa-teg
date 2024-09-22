@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import jwt_decode from 'jwt-decode';
 import ProfileLanding from '../../components/ProfileLanding/ProfileLanding.jsx';
 import SelectRole from '../../components/SelectRole/SelectRole.jsx';
-import axios from 'axios'; // Asegúrate de importar axios
+import axios from 'axios';
 
 function ProfilePage() {
    const [userRole, setUserRole] = useState(null);
