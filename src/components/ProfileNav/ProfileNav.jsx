@@ -8,7 +8,6 @@ function ProfileNav(){
 
     return (
         <>
-            <h1>hola</h1>
             <div className="sidebar-container_profile">
                 <div className="sidebar_profile">
                     <div className="sidebar-header_profile">
