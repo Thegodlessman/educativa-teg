@@ -3,7 +3,7 @@ import jwt_decode from 'jwt-decode'
 const token = localStorage.getItem('token');
 const decodedToken = jwt_decode(token);
 const user_fullname = decodedToken.full_name;
-const rol = decodedToken.role;
+const rol = decodedToken.rol;
 
 function ProfileLanding(){
     return(
