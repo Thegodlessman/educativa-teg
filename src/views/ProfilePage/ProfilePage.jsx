@@ -15,7 +15,7 @@ function ProfilePage() {
       if (token) {
             try {
                const decodedToken = jwt_decode(token);
-               const role = decodedToken.role;
+               const role = decodedToken.rol;
                setUserRole(role);
                setUserId(decodedToken.id); // Guardar userId del token
 
@@ -44,8 +44,6 @@ function ProfilePage() {
          console.log('Role updated:', response.data);
 
          localStorage.setItem('token', response.data.tokenSession);
-
-         console.log(response.data.tokenSession);
 
          handleClose();
       } catch (error) {
