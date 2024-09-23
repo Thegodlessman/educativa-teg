@@ -1,6 +1,11 @@
 import React, {useState} from 'react';
 import {Layout, Menu} from 'antd';
-import {HomeOutlined, SettingOutlined} from '@ant-design/icons';
+import {
+    HomeOutlined, 
+    SettingOutlined,
+    LogoutOutlined
+} 
+from '@ant-design/icons';
 import jwt_decode from 'jwt-decode'
 
 import './ProfileNav.css'
@@ -21,6 +26,15 @@ function ProfileNav(){
         setIsOpen(!isOpen);
     }
 
+    const handleLogout = () =>{
+        if (localStorage.getItem('token')) {
+            localStorage.removeItem('token');
+            location.href = "/login"
+        } else {
+            console.log('No hay token en localStorage');
+        }
+    }
+
     return (
         <>
             <Layout>
@@ -29,12 +43,6 @@ function ProfileNav(){
                         <img className="me-1" src='../../../src/assets/logo.png' width="50" height="50"/>
                         Educativa
                     </div>
-                    <Menu theme='dark' mode='inline' className='sidebar-menu_profile'>
-                    
-                        <button><HomeOutlined/>Home</button>
-
-                        
-                    </Menu>
 
                     <div className="sidebar-account_profile" >
                             <div className="sidebar-img_profile">
@@ -49,6 +57,18 @@ function ProfileNav(){
 
                             
                     </div>
+                    <Menu theme='dark' mode='inline' className='sidebar-menu_profile'>
+                    
+                        <button><HomeOutlined/>Home</button>
+                        
+                        <button className='sidebar-logout-btn_profile' onClick={handleLogout}>
+                            <LogoutOutlined className='sidebar-logout-custom-icon_profile'/>
+                            Cerrar Sesión
+                        </button>
+                        
+                    </Menu>
+
+                    
                 </Sider>
 
             </Layout>
