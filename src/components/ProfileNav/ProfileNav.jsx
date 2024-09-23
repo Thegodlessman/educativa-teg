@@ -16,11 +16,6 @@ function ProfileNav(){
     const user_fullname = decodedToken.full_name;
     let rol = decodedToken.rol;
 
-    if(rol === 'Usuario'){
-        token = localStorage.getItem('token')
-        decodedToken = jwt_decode(token)
-        rol = decodedToken.rol;
-    }
 
     const toggleSidebar = () =>{
         setIsOpen(!isOpen);
