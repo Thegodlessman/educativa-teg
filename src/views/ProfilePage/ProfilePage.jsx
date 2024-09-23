@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import jwt_decode from 'jwt-decode';
 import ProfileLanding from '../../components/ProfileLanding/ProfileLanding.jsx';
 import SelectRole from '../../components/SelectRole/SelectRole.jsx';
+import ProfileNav from '../../components/ProfileNav/ProfileNav.jsx';
 import axios from 'axios';
 
 function ProfilePage() {
@@ -14,7 +15,7 @@ function ProfilePage() {
       if (token) {
             try {
                const decodedToken = jwt_decode(token);
-               const role = decodedToken.role;
+               const role = decodedToken.rol;
                setUserRole(role);
                setUserId(decodedToken.id); // Guardar userId del token
 
@@ -44,22 +45,21 @@ function ProfilePage() {
 
          localStorage.setItem('token', response.data.tokenSession);
 
-         console.log(response.data.tokenSession);
-
          handleClose();
       } catch (error) {
-            console.error('Error updating role:', error.response ? error.response.data : error.message);
+         console.error('Error updating role:', error.response ? error.response.data : error.message);
       }
    };
 
    return (
       <>
-            <ProfileLanding />
-            <SelectRole
-               show={showModal}
-               handleClose={handleClose}
-               handleRoleChange={handleRoleChange}
-            />
+         <ProfileNav/>
+         <ProfileLanding />
+         <SelectRole
+            show={showModal}
+            handleClose={handleClose}
+            handleRoleChange={handleRoleChange}
+         />
       </>
    );
 }
