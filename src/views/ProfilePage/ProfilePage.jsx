@@ -20,7 +20,7 @@ function ProfilePage() {
                setUserId(decodedToken.id); // Guardar userId del token
 
                 // Mostrar modal si el rol es 'Usuario'
-               if (role === 'Usuario') {
+               if (role === 'usuario') {
                   setShowModal(true);
                }
             } catch (e) {

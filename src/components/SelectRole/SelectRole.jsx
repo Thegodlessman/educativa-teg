@@ -43,7 +43,7 @@ function SelectRole({ show, handleClose, handleRoleChange }) {
                             <img className="role-image" src={estRole} width="100" height="100" alt="Estudiante" />
                             <Button 
                                 className='button-estudiant_Role mt-2' 
-                                onClick={() => getRoleId(`Estudiante`)}
+                                onClick={() => getRoleId(`estudiante`)}
                             >
                                 Estudiante
                             </Button>
@@ -52,7 +52,7 @@ function SelectRole({ show, handleClose, handleRoleChange }) {
                             <img className="role-image" src={proRole} width="100" height="100" alt="Profesor" />
                             <Button  
                                 className='button-profesor_Role mt-2'
-                                onClick={() => getRoleId('Profesor')}
+                                onClick={() => getRoleId('profesor')}
                             >
                                 Profesor
                             </Button>
