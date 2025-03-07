@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import jwt_decode from 'jwt-decode';
 import axios from 'axios';
+import NavBar from "../../components/Navbar/Navbar";
 import SelectRole from '../../components/SelectRole/SelectRole.jsx';
 
 function ProfilePage() {
@@ -54,6 +55,7 @@ function ProfilePage() {
 
    return (
       <div>
+         <NavBar></NavBar>
          <h3>Rol activo: {activeRole}</h3>
          <button onClick={() => setShowModal(true)}>Cambiar rol</button>
 
