@@ -1,86 +1,106 @@
 import { useState } from 'react';
-import Button  from 'react-bootstrap/Button';
-import Nav from 'react-bootstrap/Nav';
+import Button from 'react-bootstrap/Button';
 import Navbar from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
-import jwt_decode from 'jwt-decode'
-import './NavBar.css'
+import { Form, FormControl, Container, InputGroup } from 'react-bootstrap';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { FaSearch } from 'react-icons/fa';
+import jwt_decode from 'jwt-decode';
+import './NavBar.css';
 
+function NavBar() {
+  let [isLogin, setIsLogin] = useState(false);
+  let user_fullname;
+  let rol;
 
-function NavBar(){
-    let [isLogin, setIsLogin] = useState(false)
-    let user_fullname
-    let rol
-    
-    try{
-        const token = localStorage.getItem('token')
-        let decodedToken = jwt_decode(token);
-        user_fullname = decodedToken.full_name;
-        rol = decodedToken.rol;
-
-        if(token){
-            isLogin = true
-        }
-    }catch(e){
-        console.log(e)
+  try {
+    const token = localStorage.getItem('token');
+    if (token) {
+      let decodedToken = jwt_decode(token);
+      user_fullname = decodedToken.full_name;
+      rol = decodedToken.rol_name;
+      isLogin = true;
     }
+  } catch (e) {
+    console.log(e);
+  }
 
-    const redirectLogin = () => {
-        location.href = "/login"
-    }
+  const location = useLocation();
+  const navigate = useNavigate();
 
-    const redirectRegister = () =>{
-        location.href = "/register"
-    }
+  const redirectLogin = () => {
+    navigate('/login');
+  };
 
-    const redirectProfile = () =>{
-        location.href = "/profile"
-    }
+  const redirectRegister = () => {
+    navigate('/register');
+  };
 
-    return (
-        <Navbar expand="lg" className="w-full bg-light" >
-            <Navbar.Brand className='fs-3 fw-bolder text-decoration-none me-5 ms-4 logo-title'  href="/">
-                <img className="me-1" src='../../../src/assets/logo.png' width="50" height="50"/>
-                Educativa
-            </Navbar.Brand>
-            <Navbar.Toggle aria-controls="basic-navbar-nav" className='me-4' />
-            <Navbar.Collapse id="basic-navbar-nav">
-                <Nav className="me-auto">
-                    <Nav.Link href="/contact">Quienes Somos</Nav.Link>
-                    <Nav.Link href="/">Otra cosa</Nav.Link>
+  const redirectProfile = () => {
+    navigate('/profile');
+  };
 
-                    <NavDropdown title="Más" id="basic-nav-dropdown">
-                    <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-                    <NavDropdown.Item href="#action/3.2">
-                        Another action
-                    </NavDropdown.Item>
-                    <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-                    <NavDropdown.Divider />
-                    <NavDropdown.Item href="#action/3.4">
-                        Separated link
-                    </NavDropdown.Item>
-                    </NavDropdown>
-                </Nav>
-                {isLogin ? (
-                    <div className="navbar-account_navbar" onClick={redirectProfile}>
-                        <div className="navbar-img_navbar">
-                            <img src='https://thumbs.dreamstime.com/z/s%C3%ADmbolo-de-perfil-masculino-inteligente-retrato-estilo-caricatura-m%C3%ADnimo-166146967.jpg' alt='Imagen de perfil'></img>
-                        </div>
-                        <div className="navbar-account-details_navbar">
-                            <p className="navbar-account-username_navbar"> {user_fullname}</p>
-                            <p className="navbar-account-rol_navbar">{rol}</p>
-                    </div>
-                    
-            </div>
-                ):(
-                    <div className=''>
-                        <Button className='btn me-2 rounded-4 pe-3 ps-3 text-decoration-none text-dark' variant='link' onClick={redirectRegister}>Regístrate</Button>
-                        <Button className='btn btn-success me-4 rounded-4 pe-3 ps-3' onClick={redirectLogin}>Iniciar Sesión</Button>
-                    </div>
-                )}
-            </Navbar.Collapse>
-        </Navbar>
-    )
+  return (
+    <Navbar expand="lg" bg="light" className="py-3 p-5">
+      <Container fluid>
+        {/* Logo a la izquierda */}
+        <Navbar.Brand className="fs-3 fw-bolder text-decoration-none logo-title" href="/">
+          <img
+            className="me-1"
+            src="../../../src/assets/logo.png"
+            width="50"
+            height="50"
+            alt="Logo Educativa"
+          />
+          Educativa
+        </Navbar.Brand>
+        <Navbar.Toggle aria-controls="navbar-content" />
+        <Navbar.Collapse id="navbar-content" className="justify-content-between">
+          {/* Mostrar search bar en todas las rutas excepto en "/" */}
+          {location.pathname !== '/' && (
+            <Form className="d-flex mx-auto w-50">
+              <InputGroup>
+                <InputGroup.Text id="search-icon">
+                  <FaSearch />
+                </InputGroup.Text>
+                <FormControl
+                  type="search"
+                  placeholder="Buscar"
+                  aria-label="Buscar"
+                  aria-describedby="search-icon"
+                />
+              </InputGroup>
+            </Form>
+          )}
+          {/* Sección de usuario o botones de registro/inicio de sesión */}
+          <div className={`d-flex align-items-center ${location.pathname === '/' ? 'ms-auto' : ''}`}>
+            {isLogin ? (
+              <div className="d-flex align-items-center navbar-account_navbar" onClick={redirectProfile}>
+                <div className="navbar-img_navbar">
+                  <img
+                    src="https://thumbs.dreamstime.com/z/s%C3%ADmbolo-de-perfil-masculino-inteligente-retrato-estilo-caricatura-m%C3%ADnimo-166146967.jpg"
+                    alt="Imagen de perfil"
+                  />
+                </div>
+                <div className="navbar-account-details_navbar ms-2">
+                  <p className="navbar-account-username_navbar m-0">{user_fullname}</p>
+                  <p className="navbar-account-rol_navbar m-0">{rol}</p>
+                </div>
+              </div>
+            ) : (
+              <div className="d-flex align-items-center">
+                <Button className="me-2 rounded-4" variant="link" onClick={redirectRegister}>
+                  Regístrate
+                </Button>
+                <Button className="btn btn-success rounded-4" onClick={redirectLogin}>
+                  Iniciar Sesión
+                </Button>
+              </div>
+            )}
+          </div>
+        </Navbar.Collapse>
+      </Container>
+    </Navbar>
+  );
 }
 
-export default NavBar
+export default NavBar;
