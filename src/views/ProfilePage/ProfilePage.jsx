@@ -3,6 +3,7 @@ import jwt_decode from 'jwt-decode';
 import axios from 'axios';
 import NavBar from "../../components/Navbar/Navbar";
 import SelectRole from '../../components/SelectRole/SelectRole.jsx';
+import Sidebar from '../../components/Sidebar/Sidebar.jsx';
 
 function ProfilePage() {
    const [activeRole, setActiveRole] = useState(null);
@@ -56,14 +57,18 @@ function ProfilePage() {
    return (
       <div>
          <NavBar></NavBar>
-         <h3>Rol activo: {activeRole}</h3>
-         <button onClick={() => setShowModal(true)}>Cambiar rol</button>
+         <div style={{ display: 'flex' }}>
+         <Sidebar />
+            <h3>Rol activo: {activeRole}</h3>
+            <button onClick={() => setShowModal(true)}>Cambiar rol</button>
 
-         <SelectRole
-            show={showModal} // El modal se debe mostrar si showModal es true
-            handleClose={handleClose}
-            handleRoleChange={handleRoleChange}
-         />
+            <SelectRole
+               show={showModal} // El modal se debe mostrar si showModal es true
+               handleClose={handleClose}
+               handleRoleChange={handleRoleChange}
+            />
+         </div>
+         
       </div>
    );
 }
