@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Navbar from 'react-bootstrap/Navbar';
 import { Form, FormControl, Container, InputGroup } from 'react-bootstrap';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { FaSearch } from 'react-icons/fa';
 import jwt_decode from 'jwt-decode';
 import './NavBar.css';
@@ -25,17 +25,18 @@ function NavBar() {
   }
 
   const location = useLocation();
+  const navigate = useNavigate();
 
   const redirectLogin = () => {
-    location.href = '/login';
+    navigate('/login');
   };
 
   const redirectRegister = () => {
-    location.href = '/register';
+    navigate('/register');
   };
 
   const redirectProfile = () => {
-    location.href = '/profile';
+    navigate('/profile');
   };
 
   return (
@@ -71,11 +72,7 @@ function NavBar() {
             </Form>
           )}
           {/* Sección de usuario o botones de registro/inicio de sesión */}
-          <div
-            className={`d-flex align-items-center ${
-              location.pathname === '/' ? 'ms-auto' : ''
-            }`}
-          >
+          <div className={`d-flex align-items-center ${location.pathname === '/' ? 'ms-auto' : ''}`}>
             {isLogin ? (
               <div className="d-flex align-items-center navbar-account_navbar" onClick={redirectProfile}>
                 <div className="navbar-img_navbar">
