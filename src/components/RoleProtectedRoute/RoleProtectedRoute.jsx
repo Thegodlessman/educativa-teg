@@ -9,7 +9,7 @@ const RoleProtectedRoute = ({ children, allowedRoles }) => {
     if (token) {
         try {
             const decodedToken = jwt_decode(token);
-            userRole = decodedToken.rol;
+            userRole = decodedToken.rol_name;
         } catch (e) {
             console.error('Error decoding token:', e);
         }
