@@ -3,8 +3,17 @@ import './Sidebar.css';
 
 // Importa íconos desde react-icons (instala con: npm install react-icons)
 import { FaHome, FaLock, FaCogs, FaSignOutAlt } from 'react-icons/fa';
+import { Navigate } from 'react-router-dom';
 
 function Sidebar() {
+  const handleLogout = () => {
+    localStorage.removeItem('token')
+
+    localStorage.removeItem('usuario')
+
+    Navigate('/login')
+  }
+
   return (
     <div className="sidebar">
       {/* Sección superior */}
@@ -53,7 +62,7 @@ function Sidebar() {
           <FaCogs className="icon" />
           <span>Ajustes</span>
         </div>
-        <div className="menu-item">
+        <div className="menu-item" onClick={handleLogout}>
           <FaSignOutAlt className="icon" />
           <span>Cerrar sesión</span>
         </div>
