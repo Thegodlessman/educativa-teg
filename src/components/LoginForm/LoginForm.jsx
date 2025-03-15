@@ -2,9 +2,13 @@ import React, { useState } from "react";
 import { Form, Button, Container, Row, Col, Alert } from 'react-bootstrap';
 import axios from "axios";
 
+import { notifyError, notifySuccess } from '../../utils/notify';
+import { useNavigate } from "react-router-dom";
+
 import './LoginForm.css';
 
 function LoginForm() {
+    const navigate = useNavigate();
     const [user_email, setEmail] = useState('');
     const [user_password, setPassword] = useState('');
     const [errors, setErrors] = useState({});
@@ -37,11 +41,13 @@ function LoginForm() {
                     const {tokenSession} = response.data;
     
                     localStorage.setItem('token', tokenSession);
+
+                    notifySuccess("Se ha iniciado sesion correctamente")
     
-                    window.location.href = "/profile";
+                    navigate("/profile")
                 }catch(error){
                     setPressButton(false)
-                    console.error('Login failed:', error.response.data);
+                    notifyError(error.response.data.message)
                     setLoginError(error.response.data.message);
                 }
 
@@ -66,11 +72,6 @@ function LoginForm() {
                             {Object.values(errors).map((error, index) => (
                                 <div key={index}>{error}</div>
                             ))}
-                        </Alert>
-                    )}
-                    {loginError && (
-                        <Alert variant="danger">
-                            {loginError}
                         </Alert>
                     )}
                     <Form className="text-center" onSubmit={handleSubmit}>
