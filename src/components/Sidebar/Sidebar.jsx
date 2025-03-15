@@ -1,17 +1,18 @@
 import React from 'react';
 import './Sidebar.css';
 
-// Importa íconos desde react-icons (instala con: npm install react-icons)
 import { FaHome, FaLock, FaCogs, FaSignOutAlt } from 'react-icons/fa';
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { notifySuccess } from '../../utils/notify';
 
 function Sidebar() {
+  const navigate = useNavigate();
   const handleLogout = () => {
     localStorage.removeItem('token')
 
-    localStorage.removeItem('usuario')
+    notifySuccess("Se ha cerrado sesion")
 
-    Navigate('/login')
+    navigate('/login')
   }
 
   return (
