@@ -1,0 +1,30 @@
+.landing-container{
+    background-color: var(--primary-color);
+    padding: 20px 0 20px 0;
+    height: 100%;
+}
+
+.landing-container-welcome{
+    display: flex;
+    flex-direction: row;
+    background-color: white;
+}
+.landing-container-welcome-text{
+    padding: 45px;
+}
+
+.welcome-title{
+    color: var(--primary-color);
+    font-weight: 700;
+    font-size: 50px;
+}
+
+.welcome-text{
+    font-weight: 700;
+    font-size: 50px;
+}
+
+.welcome-img{
+    height: 600px;
+    width: 600px;
+}
