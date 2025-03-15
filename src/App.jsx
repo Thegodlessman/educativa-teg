@@ -19,7 +19,7 @@ function App() {
                 <Route
                     path="/profile"
                     element={
-                        <RoleProtectedRoute allowedRoles={['usuario', 'estudiante', 'profesor', 'administrador', 'Desarrollador']}>
+                        <RoleProtectedRoute allowedRoles={['usuario', 'Estudiante', 'Profesor', 'administrador', 'Desarrollador']}>
                             <ProfilePage />
                         </RoleProtectedRoute>
                     }
