@@ -59,14 +59,6 @@ function ProfilePage() {
          <NavBar></NavBar>
          <div style={{ display: 'flex' }}>
          <Sidebar />
-            <h3>Rol activo: {activeRole}</h3>
-            <button onClick={() => setShowModal(true)}>Cambiar rol</button>
-
-            <SelectRole
-               show={showModal} // El modal se debe mostrar si showModal es true
-               handleClose={handleClose}
-               handleRoleChange={handleRoleChange}
-            />
          </div>
          
       </div>

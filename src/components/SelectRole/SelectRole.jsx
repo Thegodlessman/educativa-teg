@@ -18,7 +18,12 @@ function SelectRole({ show, handleClose, handleRoleChange }) {
                 const response = await axios.get('http://localhost:4555/profile/roles', {
                     headers: { Authorization: `Bearer ${token}` },
                 });
-                setRoles(response.data.roles);
+
+                // Filtrar solo los roles "Estudiante" y "Profesor"
+                const allowedRoles = response.data.roles.filter(role =>
+                    role.rol_name === 'Estudiante' || role.rol_name === 'Profesor'
+                );
+                setRoles(allowedRoles);
             } catch (error) {
                 console.error('Error al obtener los roles:', error.response ? error.response.data : error.message);
             }
@@ -54,18 +59,23 @@ function SelectRole({ show, handleClose, handleRoleChange }) {
                     <h5>Selecciona tu rol...</h5>
                     <div className="d-flex justify-content-around mt-4">
                         {/* Aquí se muestran las opciones de rol obtenidas */}
-                        {roles.map((role) => (
-                            <div className="role-selection" key={role.id_rol}>
-                                <img className="role-image" src={role.rol_name === 'Estudiante' ? estRole : proRole} width="100" height="100" alt={role.rol_name} />
-                                <Button
-                                    className='button-role mt-2'
-                                    onClick={() => getRoleId(role.rol_name)}
-                                >
-                                    {role.rol_name}
-                                </Button>
-                            </div>
-                        ))}
+                        {roles.length > 0 ? (
+                            roles.map((role) => (
+                                <div className="role-selection" key={role.id_rol}>
+                                    <img className="role-image" src={role.rol_name === 'Estudiante' ? estRole : proRole} width="100" height="100" alt={role.rol_name} />
+                                    <Button
+                                        className='button-role mt-2'
+                                        onClick={() => getRoleId(role.rol_name)}
+                                    >
+                                        {role.rol_name}
+                                    </Button>
+                                </div>
+                            ))
+                        ) : (
+                            <p>No hay roles disponibles</p>
+                        )}
                     </div>
+                    <Button variant="secondary" className="mt-3" onClick={handleClose}>Cerrar</Button>
                 </Modal.Body>
             </div>
         </Modal>
