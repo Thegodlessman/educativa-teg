@@ -6,6 +6,7 @@ import axios from 'axios';
 
 import SelectRole from '../../components/SelectRole/SelectRole.jsx';
 import welImg from '../../assets/Welcome.png'
+import { notifyError, notifySuccess } from '../../utils/notify.js';
 
 function LandingPage(){
     const [activeRole, setActiveRole] = useState(null);
@@ -43,9 +44,10 @@ function LandingPage(){
             // Actualizamos el rol activo en el estado
             setActiveRole(response.data.user.rol);
 
+            notifySuccess('Tu rol ha sido cambiado')
             handleClose();
         } catch (error) {
-            console.error('Error actualizando el rol activo:', error.response ? error.response.data : error.message);
+            notifyError('Error actualizando el rol activo:', error.response ? error.response.data : error.message)
         }
     };
 
