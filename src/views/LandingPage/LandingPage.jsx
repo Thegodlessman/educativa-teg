@@ -68,7 +68,7 @@ function LandingPage(){
                             <span className="welcome-text">Una plataforma diseñada para mejorar el aprendizaje y ofrecer herramientas de apoyo a toda la comunidad educativa. </span>
                             <div className="select-rol_landing-page">
                                 <span className='select-rol-text_landing-page'>Escoge tu rol para comenzar!</span>
-                                <button className='select-rol-button_landing-page' onClick={() => setShowModal(true)}>Cambiar rol</button>
+                                <button className='select-rol-button_landing-page' onClick={() => setShowModal(true)}>Escoge tu rol</button>
 
                                 <SelectRole
                                 show={showModal} // El modal se debe mostrar si showModal es true

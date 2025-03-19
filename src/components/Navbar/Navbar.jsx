@@ -40,7 +40,7 @@ function NavBar() {
   };
 
   return (
-    <Navbar expand="lg" bg="light" className="py-3 p-5">
+    <Navbar expand="lg" bg="light" className="py-3 p-5 container-navbar">
       <Container fluid>
         {/* Logo a la izquierda */}
         <Navbar.Brand className="fs-3 fw-bolder text-decoration-none logo-title" href="/">
