@@ -22,3 +22,7 @@
 .navbar-account-username_navbar {
     font-weight: 500;
 }
+
+.container-navbar{
+    height: 60px;
+}

@@ -6,6 +6,7 @@ import axios from 'axios';
 
 import SelectRole from '../../components/SelectRole/SelectRole.jsx';
 import welImg from '../../assets/Welcome.png'
+import { notifyError, notifySuccess } from '../../utils/notify.js';
 
 function LandingPage(){
     const [activeRole, setActiveRole] = useState(null);
@@ -43,9 +44,10 @@ function LandingPage(){
             // Actualizamos el rol activo en el estado
             setActiveRole(response.data.user.rol);
 
+            notifySuccess('Tu rol ha sido cambiado')
             handleClose();
         } catch (error) {
-            console.error('Error actualizando el rol activo:', error.response ? error.response.data : error.message);
+            notifyError('Error actualizando el rol activo:', error.response ? error.response.data : error.message)
         }
     };
 
@@ -66,7 +68,7 @@ function LandingPage(){
                             <span className="welcome-text">Una plataforma diseñada para mejorar el aprendizaje y ofrecer herramientas de apoyo a toda la comunidad educativa. </span>
                             <div className="select-rol_landing-page">
                                 <span className='select-rol-text_landing-page'>Escoge tu rol para comenzar!</span>
-                                <button className='select-rol-button_landing-page' onClick={() => setShowModal(true)}>Cambiar rol</button>
+                                <button className='select-rol-button_landing-page' onClick={() => setShowModal(true)}>Escoge tu rol</button>
 
                                 <SelectRole
                                 show={showModal} // El modal se debe mostrar si showModal es true

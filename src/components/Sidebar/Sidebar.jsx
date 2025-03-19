@@ -1,16 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './Sidebar.css';
-
-// Importa íconos desde react-icons (instala con: npm install react-icons)
 import { FaHome, FaLock, FaCogs, FaSignOutAlt } from 'react-icons/fa';
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { notifySuccess } from '../../utils/notify';
+import CreateRoom from '../CreateRoom/CreateRoom';
 
 function Sidebar() {
-  const handleLogout = () => {
-    localStorage.removeItem('token')
+  const navigate = useNavigate();
+  const [showModal, setShowModal] = useState(false);
 
-    Navigate('/login')
-  }
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    notifySuccess("Se ha cerrado sesión");
+    navigate('/login');
+  };
 
   return (
     <div className="sidebar">
@@ -23,7 +26,7 @@ function Sidebar() {
         </div>
         
         {/* Botón: Crear nueva clase */}
-        <button className="btn-create-class">
+        <button className="btn-create-class" onClick={() => setShowModal(true)}>
           + Crear nueva clase
         </button>
       </div>
@@ -65,6 +68,9 @@ function Sidebar() {
           <span>Cerrar sesión</span>
         </div>
       </div>
+
+      {/* Modal para crear clase */}
+      <CreateRoom show={showModal} handleClose={() => setShowModal(false)} />
     </div>
   );
 }

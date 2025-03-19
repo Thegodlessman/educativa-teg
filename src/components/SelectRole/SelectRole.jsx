@@ -6,6 +6,7 @@ import logo from '../../../src/assets/logo.png';
 import estRole from '../../../src/assets/estRole.png';
 import proRole from '../../../src/assets/proRole.png';
 import axios from 'axios';
+import { notifyError } from '../../utils/notify';
 
 function SelectRole({ show, handleClose, handleRoleChange }) {
     const [roles, setRoles] = useState([]);
@@ -25,19 +26,19 @@ function SelectRole({ show, handleClose, handleRoleChange }) {
                 );
                 setRoles(allowedRoles);
             } catch (error) {
-                console.error('Error al obtener los roles:', error.response ? error.response.data : error.message);
+                notifyError('Error al obtener los roles:', error.response ? error.response.data : error.message)
             }
         };
 
         if (show) fetchRoles(); // Solo obtiene los roles si el modal se está mostrando
     }, [show]);
 
-    const getRoleId = async (roleName) => {
+    const getRoleId = async (roleId) => {
         try {
-            const response = await axios.get(`http://localhost:4555/profile/get/role/${roleName}`);
+            const response = await axios.get(`http://localhost:4555/profile/get/role/${roleId}`);
             handleSelectRole(response.data.id_rol);
         } catch (error) {
-            console.error('Error fetching role ID:', error.response ? error.response.data : error.message);
+            notifyError('Error fetching role ID:', error.response ? error.response.data : error.message)
         }
     };
 
