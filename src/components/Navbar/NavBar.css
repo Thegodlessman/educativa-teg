@@ -26,3 +26,13 @@
 .container-navbar{
     height: 60px;
 }
+
+.regis-btn_navbar{
+    text-decoration: none;
+    color: black;
+}
+
+.regis-btn_navbar:hover{
+    text-decoration: none;
+    color: var(--primary-color);
+}

@@ -88,7 +88,7 @@ function NavBar() {
               </div>
             ) : (
               <div className="d-flex align-items-center">
-                <Button className="me-2 rounded-4" variant="link" onClick={redirectRegister}>
+                <Button className="me-2 rounded-4 regis-btn_navbar" variant="link" onClick={redirectRegister}>
                   Regístrate
                 </Button>
                 <Button className="btn btn-success rounded-4" onClick={redirectLogin}>
