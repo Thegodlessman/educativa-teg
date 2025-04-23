@@ -84,13 +84,9 @@ function CreateRoom({ show, handleClose }) {
   
       if (response.data.success) {
         const nuevaClase = {
-          id_room: response.data.id_room,
-          secc_room: trimmedSection,
-          max_room: capacity,
+          ...response.data.room,
           insti_name:
-            institutions.find((i) => i.id_insti === parseInt(selectedInstitution))?.insti_name || "",
-          id_institution: selectedInstitution,
-          admin_room: adminId
+            institutions.find((i) => i.id_insti === parseInt(selectedInstitution))?.insti_name || ""
         };
 
         notifySuccess("Se ha creado la clase correctamente")
