@@ -95,6 +95,11 @@ function CreateRoom({ show, handleClose }) {
 
         notifySuccess("Se ha creado la clase correctamente")
         addClass(nuevaClase);
+
+        setSection("");
+        setMaxCapacity("");
+        setSelectedInstitution("");
+
         handleClose();
       }
     } catch (error) {
