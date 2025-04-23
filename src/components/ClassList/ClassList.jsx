@@ -2,6 +2,8 @@ import { useContext } from "react";
 import { ClassContext } from "../../context/ClassContext";
 import { Card, Spinner } from "react-bootstrap";
 
+import './ClassList.css'
+
 function ClassList() {
   const { classes, loading } = useContext(ClassContext);
 
@@ -25,8 +27,8 @@ function ClassList() {
     <div className="container mt-4">
       <div className="row">
         {classes.map((room) => (
-          <div className="col-12 col-sm-6 col-md-4 col-lg-3 mb-4" key={room.id_room}>
-            <Card className="h-100 shadow-sm">
+          <div className="col-12 col-sm-6 col-md-4 col-lg-3 mb-4 card-hover-wrapper" key={room.id_room}>
+            <Card className="h-100 shadow-sm card-hover">
               <Card.Img
                 variant="top"
                 src="https://imgs.search.brave.com/ah3L7_0avHxhAByNgWriN5f6W5LbCWTwSDKIcHZ9F-Q/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9zdGF0/aWMuZ3VpYWluZmFu/dGlsLmNvbS9tZWRp/YS81MjIzMS9jL2Jp/b2dyYWZpYS1lbi1j/dWVudG8tZGUtbG9z/LWhlcm1hbm9zLWdy/aW1tLXBhcmEtbmlu/b3MtbWFnaWEtYWwt/bmFycmFyLXhzLmpw/Zw"
