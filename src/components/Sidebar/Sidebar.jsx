@@ -26,7 +26,7 @@ function Sidebar() {
         </div>
         
         {/* Botón: Crear nueva clase */}
-        <button className="btn-create-class" onClick={() => setShowModal(true)}>
+        <button className="btn-create-class btn-hover" onClick={() => setShowModal(true)}>
           + Crear nueva clase
         </button>
       </div>

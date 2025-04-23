@@ -1,90 +1,99 @@
 /* Ajusta los colores, tamaños y tipografías a tu gusto o según tu mockup */
 
 .sidebar {
-    width: 240px;               /* Ancho del sidebar */
-    height: 85vh;              
-    background-color: #fff;     /* Fondo blanco */
-    display: flex;
-    flex-direction: column;     /* Apilar secciones de arriba a abajo */
-    justify-content: space-between;
-    border-right: 1px solid #eee; /* Línea divisoria a la derecha */
-  }
-  
-  /* Sección superior */
-  .sidebar-top {
-    padding: 20px;
-  }
-  
-  /* Sección de clases */
-  .sidebar-middle {
-    padding: 0 20px;
-  }
-  
-  /* Sección inferior */
-  .sidebar-bottom {
-    padding: 20px;
-    border-top: 1px solid #eee; /* Línea divisoria para separar la parte inferior */
-  }
-  
-  /* Elementos de menú (Inicio, Ajustes, Cerrar sesión, etc.) */
-  .menu-item {
-    display: flex;
-    align-items: center;
-    padding: 8px 0;
-    cursor: pointer;
-    color: #000;         /* Color de texto */
-    font-weight: 500;    /* Ajusta el grosor según tu diseño */
-  }
-  
-  .menu-item .icon {
-    margin-right: 10px;
-    font-size: 1.1rem;   /* Tamaño del ícono */
-  }
-  
-  /* Botón para crear nueva clase */
-  .btn-create-class {
-    display: inline-block;
-    margin-top: 20px;
-    background-color: #198754; /* Ajusta el color según tu mockup (verde, etc.) */
-    color: #fff;
-    border: none;
-    padding: 10px 16px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 600;
-  }
-  
-  /* Título de sección (CLASES) */
-  .section-title {
-    margin-bottom: 10px;
-    font-size: 0.95rem;
-    color: #6c757d; /* Gris suave */
-    font-weight: 700;
-  }
-  
-  /* Cada fila de clase */
-  .class-item {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-    color: #000;
-    font-weight: 500;
-  }
-  
-  .class-item .icon {
-    margin-right: 8px;
-    font-size: 1.1rem;
-  }
-  
-  /* Badge 'NEW' */
-  .badge-new {
-    margin-left: auto;          /* Empuja el badge al extremo derecho */
-    background-color: #e8ddff;  /* Color de fondo lila suave */
-    color: #7e3bdc;             /* Texto lila */
-    border-radius: 12px;
-    padding: 2px 8px;
-    font-size: 12px;
-    font-weight: 600;
-  }
-  
+  width: 240px; /* Ancho del sidebar */
+  height: 85vh;
+  background-color: #fff; /* Fondo blanco */
+  display: flex;
+  flex-direction: column; /* Apilar secciones de arriba a abajo */
+  justify-content: space-between;
+  border-right: 1px solid #eee; /* Línea divisoria a la derecha */
+}
+
+/* Sección superior */
+.sidebar-top {
+  padding: 20px;
+}
+
+/* Sección de clases */
+.sidebar-middle {
+  padding: 0 20px;
+}
+
+/* Sección inferior */
+.sidebar-bottom {
+  padding: 20px;
+  border-top: 1px solid #eee; /* Línea divisoria para separar la parte inferior */
+}
+
+/* Elementos de menú (Inicio, Ajustes, Cerrar sesión, etc.) */
+.menu-item {
+  display: flex;
+  align-items: center;
+  padding: 8px 0;
+  cursor: pointer;
+  color: #000; /* Color de texto */
+  font-weight: 500; /* Ajusta el grosor según tu diseño */
+}
+
+.menu-item .icon {
+  margin-right: 10px;
+  font-size: 1.1rem; /* Tamaño del ícono */
+}
+
+/* Botón para crear nueva clase */
+.btn-create-class {
+  display: inline-block;
+  margin-top: 20px;
+  background-color: #198754; /* Ajusta el color según tu mockup (verde, etc.) */
+  color: #fff;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* Título de sección (CLASES) */
+.section-title {
+  margin-bottom: 10px;
+  font-size: 0.95rem;
+  color: #6c757d; /* Gris suave */
+  font-weight: 700;
+}
+
+/* Cada fila de clase */
+.class-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  color: #000;
+  font-weight: 500;
+}
+
+.class-item .icon {
+  margin-right: 8px;
+  font-size: 1.1rem;
+}
+
+/* Badge 'NEW' */
+.badge-new {
+  margin-left: auto; /* Empuja el badge al extremo derecho */
+  background-color: #e8ddff; /* Color de fondo lila suave */
+  color: #7e3bdc; /* Texto lila */
+  border-radius: 12px;
+  padding: 2px 8px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.btn-hover {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.btn-hover:hover {
+  transform: scale(1.01);
+  box-shadow: 0 0.2rem 0.5rem rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+}
