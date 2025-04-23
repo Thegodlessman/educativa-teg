@@ -1,22 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import jwt_decode from 'jwt-decode';
-import axios from 'axios';
-import NavBar from "../../components/Navbar/Navbar";
-import Sidebar from '../../components/Sidebar/Sidebar.jsx';
-import LandingTeacher from '../../components/LandingTeacher/LandingTeacher.jsx';
+import React from "react";
+import ClassList from "../../components/ClassList/ClassList.jsx";
+import DashboardLayout from "../../layout/DashboardLayout/DashboardLayout.jsx";
 
-import './ProfilePage.css'
+import "./ProfilePage.css";
 
-function ProfilePage(){
+function ProfilePage() {
    return (
-      <div>
-         <NavBar></NavBar>
-         <div className='container_landing-page'>
-            <Sidebar/>
-            <LandingTeacher/>
-         </div>
-         
-      </div>
+      <DashboardLayout>
+         <ClassList />
+      </DashboardLayout>
    );
 }
 

@@ -1,0 +1,18 @@
+.scroll-container {
+    display: flex;
+    overflow-x: auto;
+    padding-bottom: 1rem;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+  }
+  
+  .class-card {
+    min-width: 250px;
+    max-width: 250px;
+    scroll-snap-align: start;
+    flex-shrink: 0;
+    border-radius: 12px;
+  }
+  
