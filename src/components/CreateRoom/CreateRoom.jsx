@@ -1,13 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 import axios from "axios";
 import jwt_decode from "jwt-decode";
+import { ClassContext } from "../../context/ClassContext";
 
 function CreateRoom({ show, handleClose }) {
   const [institutions, setInstitutions] = useState([]);
   const [selectedInstitution, setSelectedInstitution] = useState("");
   const [section, setSection] = useState("");
   const [maxCapacity, setMaxCapacity] = useState("");
+
+  const { addClass } = useContext(ClassContext);
 
   useEffect(() => {
     const fetchInstitutions = async () => {
@@ -46,18 +49,30 @@ function CreateRoom({ show, handleClose }) {
 
       const response = await axios.post(
         "http://localhost:4555/room/create",
-        { admin_room: adminId,
+        {
+          admin_room: adminId,
           secc_room: section,
           id_institution: selectedInstitution,
           max_room: parseInt(maxCapacity, 10)
-          },
+        },
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
-      
-      handleClose();
+      if (response.data.success) {
+        const nuevaClase = {
+          id_room: response.data.id_room, // si tu backend lo devuelve
+          secc_room: section,
+          max_room: parseInt(maxCapacity, 10),
+          insti_name: institutions.find(i => i.id_insti === parseInt(selectedInstitution))?.insti_name || "",
+          id_institution: selectedInstitution,
+          admin_room: adminId
+        };
+
+        addClass(nuevaClase); // <-- se actualiza el listado automáticamente
+        handleClose();
+      }
     } catch (error) {
-      console.error("Error decoding token:", error);
+      console.error("Error al crear clase:", error);
     }
   };
 

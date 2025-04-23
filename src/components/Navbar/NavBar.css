@@ -39,6 +39,7 @@
 
 .navbar-dashboard{
     position: fixed;
+    padding: 30px;
     top: 0;
     left: 250px;
     right: 0;

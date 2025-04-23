@@ -1,34 +1,9 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import jwt_decode from "jwt-decode";
+import { useContext } from "react";
+import { ClassContext } from "../../context/ClassContext";
 import { Card, Spinner } from "react-bootstrap";
 
 function ClassList() {
-  const [classes, setClasses] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchClasses = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        const decoded = jwt_decode(token);
-
-        const response = await axios.post(
-          "http://localhost:4555/room/classes",
-          { id_user: decoded.id_user },
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
-
-        setClasses(response.data.classes || []);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching classes:", error);
-        setLoading(false);
-      }
-    };
-
-    fetchClasses();
-  }, []);
+  const { classes, loading } = useContext(ClassContext);
 
   if (loading) {
     return (
@@ -45,12 +20,12 @@ function ClassList() {
       </div>
     );
   }
-
+      
   return (
     <div className="container mt-4">
       <div className="row">
         {classes.map((room) => (
-          <div className="col-12 col-sm-6 col-md-4 col-lg-3 mb-4" key={room.code_room}>
+          <div className="col-12 col-sm-6 col-md-4 col-lg-3 mb-4" key={room.id_room}>
             <Card className="h-100 shadow-sm">
               <Card.Img
                 variant="top"
@@ -59,9 +34,7 @@ function ClassList() {
               />
               <Card.Body>
                 <Card.Title>Grado: {room.secc_room}</Card.Title>
-                <Card.Subtitle className="mb-2 text-muted">
-                  {room.insti_name}
-                </Card.Subtitle>
+                <Card.Subtitle className="mb-2 text-muted">{room.insti_name}</Card.Subtitle>
                 <Card.Text>Capacidad: {room.max_room} alumnos</Card.Text>
               </Card.Body>
             </Card>
