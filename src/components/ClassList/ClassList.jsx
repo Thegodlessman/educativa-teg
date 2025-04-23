@@ -34,7 +34,7 @@ function ClassList() {
               />
               <Card.Body>
                 <Card.Title>Grado: {room.secc_room}</Card.Title>
-                <Card.Subtitle className="mb-2 text-muted">{room.insti_name}</Card.Subtitle>
+                <Card.Subtitle className="mb-2 text-muted">{room.code_room}</Card.Subtitle>
                 <Card.Text>Capacidad: {room.max_room} alumnos</Card.Text>
               </Card.Body>
             </Card>

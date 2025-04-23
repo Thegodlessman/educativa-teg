@@ -60,7 +60,7 @@ function CreateRoom({ show, handleClose }) {
 
       if (response.data.success) {
         const nuevaClase = {
-          id_room: response.data.id_room, // si tu backend lo devuelve
+          id_room: response.data.id_room,
           secc_room: section,
           max_room: parseInt(maxCapacity, 10),
           insti_name: institutions.find(i => i.id_insti === parseInt(selectedInstitution))?.insti_name || "",
@@ -68,7 +68,7 @@ function CreateRoom({ show, handleClose }) {
           admin_room: adminId
         };
 
-        addClass(nuevaClase); // <-- se actualiza el listado automáticamente
+        addClass(nuevaClase);
         handleClose();
       }
     } catch (error) {
