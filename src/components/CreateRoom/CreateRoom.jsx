@@ -92,7 +92,8 @@ function CreateRoom({ show, handleClose }) {
           id_institution: selectedInstitution,
           admin_room: adminId
         };
-  
+
+        notifySuccess("Se ha creado la clase correctamente")
         addClass(nuevaClase);
         handleClose();
       }
