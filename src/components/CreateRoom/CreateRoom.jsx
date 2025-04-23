@@ -54,13 +54,13 @@ function CreateRoom({ show, handleClose }) {
   
     // Validación del formato de sección
     if (!seccRegex.test(trimmedSection)) {
-      alert("La sección solo debe contener letras del abecedario (sin números ni símbolos).");
+      notifyError("La sección solo debe contener letras del abecedario (sin números ni símbolos).");
       return;
     }
   
     // Validación de capacidad máxima
     if (capacity > 50) {
-      alert("La capacidad máxima permitida por clase es de 50 estudiantes.");
+      notifyError("La capacidad máxima permitida por clase es de 50 estudiantes.");
       return;
     }
   
