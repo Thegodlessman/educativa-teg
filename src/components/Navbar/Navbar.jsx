@@ -9,6 +9,7 @@ import './NavBar.css';
 
 function NavBar() {
   let [isLogin, setIsLogin] = useState(false);
+  let user_url;
   let user_fullname;
   let rol;
 
@@ -16,6 +17,7 @@ function NavBar() {
     const token = localStorage.getItem('token');
     if (token) {
       let decodedToken = jwt_decode(token);
+      user_url = decodedToken.user_url
       user_fullname = decodedToken.full_name;
       rol = decodedToken.rol_name;
       isLogin = true;
@@ -79,7 +81,7 @@ function NavBar() {
               <div className="d-flex align-items-center navbar-account_navbar" onClick={redirectProfile}>
                 <div className="navbar-img_navbar">
                   <img
-                    src="https://thumbs.dreamstime.com/z/s%C3%ADmbolo-de-perfil-masculino-inteligente-retrato-estilo-caricatura-m%C3%ADnimo-166146967.jpg"
+                    src={user_url}
                     alt="Imagen de perfil"
                   />
                 </div>
