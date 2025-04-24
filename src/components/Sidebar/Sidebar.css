@@ -2,12 +2,13 @@
 
 .sidebar {
   width: 240px; /* Ancho del sidebar */
-  height: 85vh;
+  height: 100vh;
   background-color: #fff; /* Fondo blanco */
   display: flex;
   flex-direction: column; /* Apilar secciones de arriba a abajo */
   justify-content: space-between;
   border-right: 1px solid #eee; /* Línea divisoria a la derecha */
+  overflow: hidden;
 }
 
 /* Sección superior */
@@ -17,7 +18,20 @@
 
 /* Sección de clases */
 .sidebar-middle {
-  padding: 0 20px;
+  padding: 1rem;
+  flex-grow: 1;
+  overflow-y: auto;
+  max-height: 100%;
+}
+
+/* Scrollbar estilizado */
+.sidebar-middle::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar-middle::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 6px;
 }
 
 /* Sección inferior */
@@ -55,26 +69,55 @@
   font-weight: 600;
 }
 
+.btn-hover {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.btn-hover:hover {
+  transform: scale(1.01);
+  box-shadow: 0 0.2rem 0.5rem rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+}
+
 /* Título de sección (CLASES) */
 .section-title {
-  margin-bottom: 10px;
-  font-size: 0.95rem;
-  color: #6c757d; /* Gris suave */
-  font-weight: 700;
+  font-size: 0.85rem;
+  font-weight: bold;
+  color: #888;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
 }
 
-/* Cada fila de clase */
+/* Contenedor de clase */
 .class-item {
+  background-color: #f5f5f5;
+  border-radius: 12px;
+  padding: 0.6rem 0.9rem;
+  margin-bottom: 0.5rem;
   display: flex;
   align-items: center;
-  margin-bottom: 10px;
-  color: #000;
-  font-weight: 500;
+  gap: 0.6rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
 }
 
+.class-item:hover {
+  background-color: #e0e0e0;
+  transform: scale(1.02);
+}
+
+/* Icono */
 .class-item .icon {
-  margin-right: 8px;
-  font-size: 1.1rem;
+  color: var(--primary-color); /* azul educativo */
+  font-size: 1rem;
+}
+
+/* Texto de clase */
+.class-item span {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #333;
 }
 
 /* Badge 'NEW' */
@@ -88,12 +131,9 @@
   font-weight: 600;
 }
 
-.btn-hover {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.btn-hover:hover {
-  transform: scale(1.01);
-  box-shadow: 0 0.2rem 0.5rem rgba(0, 0, 0, 0.15);
-  cursor: pointer;
+/* Mensaje si no hay clases */
+.no-classes {
+  font-size: 0.85rem;
+  color: #999;
+  margin-top: 0.5rem;
 }
