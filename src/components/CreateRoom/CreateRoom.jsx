@@ -10,6 +10,7 @@ function CreateRoom({ show, handleClose }) {
   const [selectedInstitution, setSelectedInstitution] = useState("");
   const [section, setSection] = useState("");
   const [maxCapacity, setMaxCapacity] = useState("");
+  const [grate, setGrate] = useState("");
 
   const { addClass } = useContext(ClassContext);
 
@@ -41,53 +42,50 @@ function CreateRoom({ show, handleClose }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     const capacity = parseInt(maxCapacity, 10);
     const trimmedSection = section.trim();
     const seccRegex = /^[A-Za-z]+$/;
-  
+
     // Validación de campos vacíos
-    if (!selectedInstitution || !trimmedSection || !maxCapacity) {
+    if (!selectedInstitution || !trimmedSection || !maxCapacity || !grate) {
       notifyError("Por favor, completa todos los campos antes de continuar.");
       return;
     }
-  
+
     // Validación del formato de sección
     if (!seccRegex.test(trimmedSection)) {
       notifyError("La sección solo debe contener letras del abecedario (sin números ni símbolos).");
       return;
     }
-  
+
     // Validación de capacidad máxima
     if (capacity > 50) {
       notifyError("La capacidad máxima permitida por clase es de 50 estudiantes.");
       return;
     }
-  
+
     const token = localStorage.getItem("token");
     if (!token) return console.error("Token no encontrado");
-  
+
     try {
       const decodedToken = jwt_decode(token);
       const adminId = decodedToken.id_user;
-  
+
       const response = await axios.post(
         "http://localhost:4555/room/create",
         {
           admin_room: adminId,
           secc_room: trimmedSection,
           id_institution: selectedInstitution,
-          max_room: capacity
+          max_room: capacity,
+          room_grate: grate
         },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-  
+
       if (response.data.success) {
-        const nuevaClase = {
-          ...response.data.room,
-          insti_name:
-            institutions.find((i) => i.id_insti === parseInt(selectedInstitution))?.insti_name || ""
-        };
+        const nuevaClase = response.data.room
 
         notifySuccess("Se ha creado la clase correctamente")
         addClass(nuevaClase);
@@ -95,6 +93,7 @@ function CreateRoom({ show, handleClose }) {
         setSection("");
         setMaxCapacity("");
         setSelectedInstitution("");
+        setGrate("");
 
         handleClose();
       }
@@ -103,7 +102,7 @@ function CreateRoom({ show, handleClose }) {
       console.error("Error al crear clase:", error);
     }
   };
-  
+
 
   return (
     <Modal show={show} onHide={handleClose} centered backdrop="static">
@@ -113,7 +112,7 @@ function CreateRoom({ show, handleClose }) {
       <Modal.Body>
         <Form onSubmit={handleSubmit}>
           <Form.Group>
-            <Form.Label>Escuela</Form.Label>
+            <Form.Label>Institución</Form.Label>
             <Form.Select
               value={selectedInstitution}
               onChange={(e) => setSelectedInstitution(e.target.value)}
@@ -128,6 +127,17 @@ function CreateRoom({ show, handleClose }) {
               ) : (
                 <option value="" disabled>Cargando instituciones...</option>
               )}
+            </Form.Select>
+          </Form.Group>
+
+          <Form.Group className="mt-3">
+            <Form.Label>Grado</Form.Label>
+            <Form.Select value={grate} onChange={(e) => setGrate(e.target.value)}>
+              <option value="">Selecciona el grado</option>
+              <option value="4to">4to Grado</option>
+              <option value="5to">5to Grado</option>
+              <option value="6to">6to Grado</option>
+              <option value="7mo">7mo Grado</option>
             </Form.Select>
           </Form.Group>
 

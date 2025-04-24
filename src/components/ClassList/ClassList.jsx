@@ -31,13 +31,14 @@ function ClassList() {
             <Card className="h-100 shadow-sm card-hover">
               <Card.Img
                 variant="top"
-                src="https://imgs.search.brave.com/ah3L7_0avHxhAByNgWriN5f6W5LbCWTwSDKIcHZ9F-Q/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9zdGF0/aWMuZ3VpYWluZmFu/dGlsLmNvbS9tZWRp/YS81MjIzMS9jL2Jp/b2dyYWZpYS1lbi1j/dWVudG8tZGUtbG9z/LWhlcm1hbm9zLWdy/aW1tLXBhcmEtbmlu/b3MtbWFnaWEtYWwt/bmFycmFyLXhzLmpw/Zw"
+                src={room.room_url}
                 alt="Imagen de clase"
               />
               <Card.Body>
-                <Card.Title>Grado: {room.secc_room}</Card.Title>
-                <Card.Subtitle className="mb-2 text-muted">{room.code_room}</Card.Subtitle>
-                <Card.Text>Capacidad: {room.max_room} alumnos</Card.Text>
+                <Card.Title>{room.room_grate} "{room.secc_room.trim()}"</Card.Title>
+                <Card.Subtitle>{room.code_room}</Card.Subtitle>
+                <Card.Subtitle className="mt-1 text-muted">{room.insti_name}</Card.Subtitle>
+                <Card.Text className="text-muted">{room.max_room} alumnos</Card.Text>
               </Card.Body>
             </Card>
           </div>
