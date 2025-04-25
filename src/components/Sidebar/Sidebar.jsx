@@ -9,7 +9,7 @@ import { ClassContext } from "../../context/ClassContext";
 function Sidebar() {
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
-  const { classes } = useContext(ClassContext); // ✅ Obtenemos las clases del contexto
+  const { classes } = useContext(ClassContext);
 
   const handleLogout = () => {
     localStorage.removeItem('token');
