@@ -3,15 +3,15 @@ import React, { useState, useEffect } from 'react';
 import './SelectRole.css';
 
 import logo from '../../../src/assets/logo.png';
-import estRole from '../../../src/assets/estRole.png';
-import proRole from '../../../src/assets/proRole.png';
 import axios from 'axios';
 import { notifyError } from '../../utils/notify';
 
-function SelectRole({ show, handleClose, handleRoleChange }) {
-    const [roles, setRoles] = useState([]);
+const teacherRole = import.meta.env.VITE_CLOUDNARY_IMAGE + 'educativa/TeacherRole'
+const studentRole = import.meta.env.VITE_CLOUDNARY_IMAGE + 'educativa/StudentRole'
 
-    // UseEffect para obtener los roles al abrir el modal
+function SelectRole({ show, handleClose, handleRoleChange }) {
+    const [roles, setRoles] = useState([]);  
+
     useEffect(() => {
         const fetchRoles = async () => {
             try {
@@ -20,7 +20,6 @@ function SelectRole({ show, handleClose, handleRoleChange }) {
                     headers: { Authorization: `Bearer ${token}` },
                 });
 
-                // Filtrar solo los roles "Estudiante" y "Profesor"
                 const allowedRoles = response.data.roles.filter(role =>
                     role.rol_name === 'Estudiante' || role.rol_name === 'Profesor'
                 );
@@ -63,7 +62,7 @@ function SelectRole({ show, handleClose, handleRoleChange }) {
                         {roles.length > 0 ? (
                             roles.map((role) => (
                                 <div className="role-selection" key={role.id_rol}>
-                                    <img className="role-image" src={role.rol_name === 'Estudiante' ? estRole : proRole} width="100" height="100" alt={role.rol_name} />
+                                    <img className="role-image" src={role.rol_name === 'Estudiante' ? studentRole : teacherRole} width="100" height="100" alt={role.rol_name} />
                                     <Button
                                         className='button-role mt-2'
                                         onClick={() => getRoleId(role.rol_name)}
