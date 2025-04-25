@@ -36,7 +36,7 @@ function Sidebar() {
         {classes.map((clase) => (
           <div key={clase.id_room} className="class-item">
             <FaBook className="icon" />
-            <span>{clase.room_grate} "{clase.secc_room}"</span>
+            <span>{clase.room_grate} "{clase.secc_room.trim()}"</span>
           </div>
         ))}
 

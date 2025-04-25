@@ -12,7 +12,7 @@ function LandingPage(){
     const [showModal, setShowModal] = useState(false); // Estado que controla la visibilidad del modal
     const [userId, setUserId] = useState('');
 
-    const welImg = import.meta.env.VITE_CLOUDNARY_IMAGE + 'educativa/Welcome_aa2b03'
+    const welImg = import.meta.env.VITE_CLOUDNARY_IMAGE + 'educativa/Welcome1'
 
     useEffect(() => {
         const token = localStorage.getItem('token');
