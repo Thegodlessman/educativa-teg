@@ -4,7 +4,7 @@ import axios from "axios";
 import jwt_decode from "jwt-decode";
 
 import logo from "../../../src/assets/logo.png";
-import { notifyError } from "../../utils/notify";
+import { notifyError, notifySuccess } from "../../utils/notify";
 import "./SelectRole.css";
 
 const teacherRole =
@@ -156,29 +156,51 @@ function SelectRole({ show, handleClose, handleRoleChange }) {
   const handleFinish = async () => {
     try {
       const formData = new FormData();
-      formData.append("institution", selectedInstitution);
-      if (selectedImage) {
-        formData.append("photo", selectedImage);
-      }
-
       const token = localStorage.getItem("token");
-      await axios.post(
-        `http://localhost:4555/users/setup/${userData.id_user}`,
-        formData,
+  
+      let photoUrl = "";
+  
+      // 1. Si hay imagen seleccionada, primero súbela a Cloudinary a través del backend
+      if (selectedImage) {
+        const uploadFormData = new FormData();
+        uploadFormData.append("photo", selectedImage);
+  
+        const uploadResponse = await axios.post(
+          "http://localhost:4555/uploadProfile",
+          uploadFormData,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+  
+        photoUrl = uploadResponse.data.imageUrl;
+      }
+  
+      // 2. Ahora envía la institución y (si existe) la foto al endpoint de setup      
+      await axios.put(
+        `http://localhost:4555/profile/setup/${userData.id_user}`,
+        {
+          institution: selectedInstitution,
+          photoUrl: photoUrl
+        },
         {
           headers: {
             Authorization: `Bearer ${token}`,
-            "Content-Type": "multipart/form-data",
           },
         }
       );
-
+  
       notifySuccess("Perfil completado exitosamente");
       handleClose();
     } catch (err) {
+      console.error(err);
       notifyError("Error al guardar la información");
     }
   };
+  
 
   const handleCountryChange = (e) => {
     const value = e.target.value;
@@ -405,7 +427,7 @@ function SelectRole({ show, handleClose, handleRoleChange }) {
                 <h4 className="mb-2">¡Tu perfil está casi listo!</h4>
                 <div className="user-summary-card">
                   <img
-                    src={userData.user_url}
+                    src={previewUrl}
                     alt="Foto de perfil"
                     className="summary-img"
                   />
