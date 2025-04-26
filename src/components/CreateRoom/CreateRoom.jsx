@@ -1,13 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 import axios from "axios";
 import jwt_decode from "jwt-decode";
+import { ClassContext } from "../../context/ClassContext";
+import { notifyError, notifySuccess } from "../../utils/notify";
 
 function CreateRoom({ show, handleClose }) {
   const [institutions, setInstitutions] = useState([]);
   const [selectedInstitution, setSelectedInstitution] = useState("");
   const [section, setSection] = useState("");
   const [maxCapacity, setMaxCapacity] = useState("");
+  const [grate, setGrate] = useState("");
+
+  const { addClass } = useContext(ClassContext);
 
   useEffect(() => {
     const fetchInstitutions = async () => {
@@ -37,6 +42,29 @@ function CreateRoom({ show, handleClose }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const capacity = parseInt(maxCapacity, 10);
+    const trimmedSection = section.trim();
+    const seccRegex = /^[A-Za-z]+$/;
+
+    // Validación de campos vacíos
+    if (!selectedInstitution || !trimmedSection || !maxCapacity || !grate) {
+      notifyError("Por favor, completa todos los campos antes de continuar.");
+      return;
+    }
+
+    // Validación del formato de sección
+    if (!seccRegex.test(trimmedSection)) {
+      notifyError("La sección solo debe contener letras del abecedario (sin números ni símbolos).");
+      return;
+    }
+
+    // Validación de capacidad máxima
+    if (capacity > 50) {
+      notifyError("La capacidad máxima permitida por clase es de 50 estudiantes.");
+      return;
+    }
+
     const token = localStorage.getItem("token");
     if (!token) return console.error("Token no encontrado");
 
@@ -46,20 +74,35 @@ function CreateRoom({ show, handleClose }) {
 
       const response = await axios.post(
         "http://localhost:4555/room/create",
-        { admin_room: adminId,
-          secc_room: section,
+        {
+          admin_room: adminId,
+          secc_room: trimmedSection,
           id_institution: selectedInstitution,
-          max_room: parseInt(maxCapacity, 10)
-          },
+          max_room: capacity,
+          room_grate: grate
+        },
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
-      
-      handleClose();
+      if (response.data.success) {
+        const nuevaClase = response.data.room
+
+        notifySuccess("Se ha creado la clase correctamente")
+        addClass(nuevaClase);
+
+        setSection("");
+        setMaxCapacity("");
+        setSelectedInstitution("");
+        setGrate("");
+
+        handleClose();
+      }
     } catch (error) {
-      console.error("Error decoding token:", error);
+      notifyError("Ocurrrio un error al crear la clase")
+      console.error("Error al crear clase:", error);
     }
   };
+
 
   return (
     <Modal show={show} onHide={handleClose} centered backdrop="static">
@@ -69,11 +112,10 @@ function CreateRoom({ show, handleClose }) {
       <Modal.Body>
         <Form onSubmit={handleSubmit}>
           <Form.Group>
-            <Form.Label>Escuela</Form.Label>
+            <Form.Label>Institución</Form.Label>
             <Form.Select
               value={selectedInstitution}
               onChange={(e) => setSelectedInstitution(e.target.value)}
-              required
             >
               <option value="">Seleccionar institución</option>
               {institutions.length > 0 ? (
@@ -89,13 +131,26 @@ function CreateRoom({ show, handleClose }) {
           </Form.Group>
 
           <Form.Group className="mt-3">
+            <Form.Label>Grado</Form.Label>
+            <Form.Select value={grate} onChange={(e) => setGrate(e.target.value)}>
+              <option value="">Selecciona el grado</option>
+              <option value="4to">4to Grado</option>
+              <option value="5to">5to Grado</option>
+              <option value="6to">6to Grado</option>
+              <option value="7mo">7mo Grado</option>
+            </Form.Select>
+          </Form.Group>
+
+          <Form.Group className="mt-3">
             <Form.Label>Sección</Form.Label>
             <Form.Control
               type="text"
               placeholder="Ejemplo: A, B, C..."
               value={section}
-              onChange={(e) => setSection(e.target.value)}
-              required
+              onChange={(e) => {
+                const value = e.target.value.toUpperCase();
+                if (/^[A-Za-z]*$/.test(value)) setSection(value);
+              }}
             />
           </Form.Group>
 
@@ -106,7 +161,6 @@ function CreateRoom({ show, handleClose }) {
               placeholder="Ejemplo: 30"
               value={maxCapacity}
               onChange={(e) => setMaxCapacity(e.target.value)}
-              required
               min={1}
             />
           </Form.Group>

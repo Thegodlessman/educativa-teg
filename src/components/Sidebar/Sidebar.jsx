@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import './Sidebar.css';
-import { FaHome, FaLock, FaCogs, FaSignOutAlt } from 'react-icons/fa';
+import { FaHome, FaBook, FaCogs, FaSignOutAlt } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { notifySuccess } from '../../utils/notify';
 import CreateRoom from '../CreateRoom/CreateRoom';
+import { ClassContext } from "../../context/ClassContext";
 
 function Sidebar() {
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
+  const { classes } = useContext(ClassContext);
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -19,43 +21,30 @@ function Sidebar() {
     <div className="sidebar">
       {/* Sección superior */}
       <div className="sidebar-top">
-        {/* Opción: Inicio */}
         <div className="menu-item">
           <FaHome className="icon" />
           <span>Inicio</span>
         </div>
-        
-        {/* Botón: Crear nueva clase */}
-        <button className="btn-create-class" onClick={() => setShowModal(true)}>
+        <button className="btn-create-class btn-hover" onClick={() => setShowModal(true)}>
           + Crear nueva clase
         </button>
       </div>
 
-      {/* Sección de clases */}
       <div className="sidebar-middle">
         <h4 className="section-title">CLASES</h4>
-        
-        <div className="class-item">
-          <FaLock className="icon" />
-          <span>4to "A"</span>
-          <span className="badge-new">NEW</span>
-        </div>
-        <div className="class-item">
-          <FaLock className="icon" />
-          <span>5to "A"</span>
-          <span className="badge-new">NEW</span>
-        </div>
-        <div className="class-item">
-          <FaLock className="icon" />
-          <span>6to "A"</span>
-          <span className="badge-new">NEW</span>
-        </div>
-        <div className="class-item">
-          <FaLock className="icon" />
-          <span>6to "B"</span>
-          <span className="badge-new">NEW</span>
+
+        {classes.map((clase) => (
+          <div key={clase.id_room} className="class-item">
+            <FaBook className="icon" />
+            <span>{clase.room_grate} "{clase.secc_room.trim()}"</span>
+          </div>
+        ))}
+
+        <div className='scrollable-section'>
+
         </div>
       </div>
+
 
       {/* Sección inferior */}
       <div className="sidebar-bottom">
@@ -69,7 +58,7 @@ function Sidebar() {
         </div>
       </div>
 
-      {/* Modal para crear clase */}
+      {/* Modal de creación de clases */}
       <CreateRoom show={showModal} handleClose={() => setShowModal(false)} />
     </div>
   );
