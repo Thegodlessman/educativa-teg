@@ -274,11 +274,11 @@ function SelectRole({ show, handleClose, handleRoleChange }) {
       </div>
 
       <div className="progress-bar-container">
-  <div
-    className="progress-bar-fill"
-    style={{ width: `${(step / 4) * 100}%` }}
-  ></div>
-</div>
+        <div
+          className="progress-bar-fill"
+          style={{ width: `${(step / 4) * 100}%` }}
+        ></div>
+      </div>
 
     </Modal>
   );
