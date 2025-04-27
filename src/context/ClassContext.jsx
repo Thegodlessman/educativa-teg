@@ -11,6 +11,13 @@ export const ClassProvider = ({ children }) => {
     const fetchClasses = async () => {
         try {
             const token = localStorage.getItem("token");
+
+            if (!token) {
+                setClasses([]); 
+                setLoading(false);
+                return;
+            }
+
             const decoded = jwt_decode(token);
 
             const response = await axios.post(
@@ -22,6 +29,7 @@ export const ClassProvider = ({ children }) => {
             setClasses(response.data.classes || []);
         } catch (error) {
             console.error("Error fetching classes:", error);
+            setClasses([]); 
         } finally {
             setLoading(false);
         }
@@ -33,10 +41,21 @@ export const ClassProvider = ({ children }) => {
 
     useEffect(() => {
         fetchClasses();
-    }, []);
+
+        const handleStorageChange = (e) => {
+            if (e.key === "token") {
+                fetchClasses();
+            }
+        };
+        window.addEventListener("storage", handleStorageChange);
+
+        return () => {
+            window.removeEventListener("storage", handleStorageChange);
+        };
+    }, [localStorage.getItem("token")]);
 
     return (
-        <ClassContext.Provider value={{ classes, loading, fetchClasses, addClass }}>
+        <ClassContext.Provider value={{ classes, setClasses, loading, fetchClasses, addClass }}>
             {children}
         </ClassContext.Provider>
     );
