@@ -4,6 +4,7 @@ import axios from "axios";
 import jwt_decode from "jwt-decode";
 import { ClassContext } from "../../context/ClassContext";
 import { notifyError, notifySuccess } from "../../utils/notify";
+import "./CreateRoom.css";
 
 function CreateRoom({ show, handleClose }) {
   const [institutions, setInstitutions] = useState([]);
@@ -47,19 +48,16 @@ function CreateRoom({ show, handleClose }) {
     const trimmedSection = section.trim();
     const seccRegex = /^[A-Za-z]+$/;
 
-    // Validación de campos vacíos
     if (!selectedInstitution || !trimmedSection || !maxCapacity || !grate) {
       notifyError("Por favor, completa todos los campos antes de continuar.");
       return;
     }
 
-    // Validación del formato de sección
     if (!seccRegex.test(trimmedSection)) {
-      notifyError("La sección solo debe contener letras del abecedario (sin números ni símbolos).");
+      notifyError("La sección solo debe contener letras del abecedario.");
       return;
     }
 
-    // Validación de capacidad máxima
     if (capacity > 50) {
       notifyError("La capacidad máxima permitida por clase es de 50 estudiantes.");
       return;
@@ -85,9 +83,8 @@ function CreateRoom({ show, handleClose }) {
       );
 
       if (response.data.success) {
-        const nuevaClase = response.data.room
-
-        notifySuccess("Se ha creado la clase correctamente")
+        const nuevaClase = response.data.room;
+        notifySuccess("Se ha creado la clase correctamente");
         addClass(nuevaClase);
 
         setSection("");
@@ -98,22 +95,22 @@ function CreateRoom({ show, handleClose }) {
         handleClose();
       }
     } catch (error) {
-      notifyError("Ocurrrio un error al crear la clase")
+      notifyError("Ocurrió un error al crear la clase");
       console.error("Error al crear clase:", error);
     }
   };
 
-
   return (
     <Modal show={show} onHide={handleClose} centered backdrop="static">
-      <Modal.Header closeButton>
-        <Modal.Title>Crear Clase</Modal.Title>
+      <Modal.Header closeButton className="header_create-class">
+        <Modal.Title className="title_create-class">Crear Clase</Modal.Title>
       </Modal.Header>
-      <Modal.Body>
-        <Form onSubmit={handleSubmit}>
-          <Form.Group>
-            <Form.Label>Institución</Form.Label>
+      <Modal.Body className="body_create-class">
+        <Form onSubmit={handleSubmit} className="form_create-class">
+          <Form.Group className="group_create-class">
+            <Form.Label className="label_create-class">Institución</Form.Label>
             <Form.Select
+              className="select_create-class"
               value={selectedInstitution}
               onChange={(e) => setSelectedInstitution(e.target.value)}
             >
@@ -130,9 +127,13 @@ function CreateRoom({ show, handleClose }) {
             </Form.Select>
           </Form.Group>
 
-          <Form.Group className="mt-3">
-            <Form.Label>Grado</Form.Label>
-            <Form.Select value={grate} onChange={(e) => setGrate(e.target.value)}>
+          <Form.Group className="group_create-class">
+            <Form.Label className="label_create-class">Grado</Form.Label>
+            <Form.Select
+              className="select_create-class"
+              value={grate}
+              onChange={(e) => setGrate(e.target.value)}
+            >
               <option value="">Selecciona el grado</option>
               <option value="4to">4to Grado</option>
               <option value="5to">5to Grado</option>
@@ -141,9 +142,10 @@ function CreateRoom({ show, handleClose }) {
             </Form.Select>
           </Form.Group>
 
-          <Form.Group className="mt-3">
-            <Form.Label>Sección</Form.Label>
+          <Form.Group className="group_create-class">
+            <Form.Label className="label_create-class">Sección</Form.Label>
             <Form.Control
+              className="input_create-class"
               type="text"
               placeholder="Ejemplo: A, B, C..."
               value={section}
@@ -154,9 +156,10 @@ function CreateRoom({ show, handleClose }) {
             />
           </Form.Group>
 
-          <Form.Group className="mt-3">
-            <Form.Label>Capacidad Máxima de Estudiantes</Form.Label>
+          <Form.Group className="group_create-class">
+            <Form.Label className="label_create-class">Capacidad Máxima de Estudiantes</Form.Label>
             <Form.Control
+              className="input_create-class"
               type="number"
               placeholder="Ejemplo: 30"
               value={maxCapacity}
@@ -165,7 +168,7 @@ function CreateRoom({ show, handleClose }) {
             />
           </Form.Group>
 
-          <Button variant="success" type="submit" className="mt-3 w-100">
+          <Button variant="success" type="submit" className="button_create-class">
             Crear
           </Button>
         </Form>

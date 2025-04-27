@@ -4,7 +4,7 @@ import axios from "axios";
 import jwt_decode from "jwt-decode";
 
 import logo from "../../../src/assets/logo.png";
-import { notifyError } from "../../utils/notify";
+import { notifyError, notifySuccess } from "../../utils/notify";
 import "./SelectRole.css";
 
 const teacherRole =
@@ -15,7 +15,7 @@ const studentRole =
 function SelectRole({ show, handleClose, handleRoleChange }) {
   const [step, setStep] = useState(1);
   const [roles, setRoles] = useState([]);
-  const [selectedRole, setSelectedRole] = useState(null);
+  const [selectedRoleId, setSelectedRoleId] = useState(null);
   const [selectedInstitution, setSelectedInstitution] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
@@ -35,8 +35,22 @@ function SelectRole({ show, handleClose, handleRoleChange }) {
     if (show) {
       fetchRoles();
       fetchCountries();
-
+      // Resetear estados al mostrar el modal
       setStep(1);
+      setSelectedRoleId(null); // Resetear ID del rol
+      setSelectedInstitution(null);
+      setSelectedImage(null);
+      setPreviewUrl(null);
+      setSelectedCountry(null);
+      setSelectedState(null);
+      setSelectedMuni(null);
+      setSelectedParish(null);
+      // Resetear listas dependientes
+      setState([]);
+      setMuni([]);
+      setParish([]);
+      setInstitutions([]);
+
     }
   }, [show]);
 
@@ -58,11 +72,11 @@ function SelectRole({ show, handleClose, handleRoleChange }) {
     }
   }, [selectedMuni]);
 
-  useEffect(()=>{
-    if(selectedParish){
+  useEffect(() => {
+    if (selectedParish) {
       fetchInstitutions()
     }
-  },[selectedParish])
+  }, [selectedParish])
 
   const fetchCountries = async () => {
     try {
@@ -154,31 +168,66 @@ function SelectRole({ show, handleClose, handleRoleChange }) {
   const handleBack = () => setStep((prev) => prev - 1);
 
   const handleFinish = async () => {
+
+    if (!selectedRoleId) {
+      notifyError("Por favor, selecciona un rol.");
+      setStep(1); // Regresar al paso de selección de rol si es necesario
+      return;
+    }
+    if (!selectedInstitution) {
+      notifyError("Por favor, selecciona una institución.");
+      setStep(2); // Regresar al paso de selección de institución si es necesario
+      return;
+    }
+
     try {
       const formData = new FormData();
-      formData.append("institution", selectedInstitution);
-      if (selectedImage) {
-        formData.append("photo", selectedImage);
-      }
-
       const token = localStorage.getItem("token");
-      await axios.post(
-        `http://localhost:4555/users/setup/${userData.id_user}`,
-        formData,
+
+      let photoUrl = "";
+      if (selectedImage) {
+        const uploadFormData = new FormData();
+        uploadFormData.append("photo", selectedImage);
+
+        const uploadResponse = await axios.post(
+          "http://localhost:4555/uploadProfile",
+          uploadFormData,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+
+        photoUrl = uploadResponse.data.imageUrl;
+      }
+      const response = await axios.put(
+        `http://localhost:4555/profile/setup/${userData.id_user}`,
+        {
+          institution: selectedInstitution,
+          photoUrl: photoUrl,
+          id_rol: selectedRoleId,
+        },
         {
           headers: {
             Authorization: `Bearer ${token}`,
-            "Content-Type": "multipart/form-data",
           },
         }
       );
 
+      localStorage.setItem('token', response.data.tokenSession);
+      console.log(response.data.tokenSession)
+
       notifySuccess("Perfil completado exitosamente");
       handleClose();
     } catch (err) {
-      notifyError("Error al guardar la información");
+      console.error(err)
+      const errorMessage = err.response?.data?.message || "Error al guardar la información";
+      notifyError(errorMessage);
     }
   };
+
 
   const handleCountryChange = (e) => {
     const value = e.target.value;
@@ -192,7 +241,7 @@ function SelectRole({ show, handleClose, handleRoleChange }) {
     setParish([]);
     setInstitutions([]);
   };
-  
+
   const handleStateChange = (e) => {
     const value = e.target.value;
     setSelectedState(value);
@@ -203,7 +252,7 @@ function SelectRole({ show, handleClose, handleRoleChange }) {
     setParish([]);
     setInstitutions([]);
   };
-  
+
   const handleMunicipalityChange = (e) => {
     const value = e.target.value;
     setSelectedMuni(value);
@@ -212,14 +261,20 @@ function SelectRole({ show, handleClose, handleRoleChange }) {
     setParish([]);
     setInstitutions([]);
   };
-  
+
   const handleParishChange = (e) => {
     const value = e.target.value;
     setSelectedParish(value);
     setSelectedInstitution(null);
     setInstitutions([]);
   };
-  
+
+  // ----- CAMBIO 4: Función auxiliar para obtener el nombre del rol a partir del ID -----
+  const getRoleNameById = (roleId) => {
+    const role = roles.find(r => r.id_rol === roleId);
+    return role ? role.rol_name : "Desconocido";
+  }
+
 
   return (
     <Modal
@@ -248,9 +303,10 @@ function SelectRole({ show, handleClose, handleRoleChange }) {
                     roles.map((role) => (
                       <div
                         key={role.id_rol}
-                        className={`role-selection ${selectedRole === role.rol_name ? "selected-role" : ""
+                        // ----- CAMBIO 5: Actualizar la clase 'selected' y el onClick -----
+                        className={`role-selection ${selectedRoleId === role.id_rol ? "selected-role" : "" // Comparar con selectedRoleId
                           }`}
-                        onClick={() => setSelectedRole(role.rol_name)}
+                        onClick={() => setSelectedRoleId(role.id_rol)} // Almacenar el id_rol
                       >
                         <img
                           src={
@@ -263,7 +319,7 @@ function SelectRole({ show, handleClose, handleRoleChange }) {
                           width={100}
                           height={100}
                         />
-                        <span>{role.rol_name}</span>
+                        <span>{role.rol_name}</span> {/* Mostrar el nombre */}
                       </div>
                     ))
                   ) : (
@@ -275,89 +331,89 @@ function SelectRole({ show, handleClose, handleRoleChange }) {
 
             {step === 2 && (
               <>
-              <h5>Ubicación de la institución</h5>
-              <div className="select-group mt-4">
-                <div className="form-group">
-                  <select
-                    className="form-select"
-                    value={selectedCountry || ""}
-                    onChange={(e) => handleCountryChange(e)}
-                  >
-                    <option value="" disabled>-- Selecciona un país</option>
-                    {countries.map((c) => (
-                      <option key={c.id_country} value={c.id_country}>
-                        {c.country_name}
-                      </option>
-                    ))}
-                  </select>
+                <h5>Ubicación de la institución</h5>
+                <div className="select-group mt-4">
+                  <div className="form-group">
+                    <select
+                      className="form-select"
+                      value={selectedCountry || ""}
+                      onChange={(e) => handleCountryChange(e)}
+                    >
+                      <option value="" disabled>-- Selecciona un país</option>
+                      {countries.map((c) => (
+                        <option key={c.id_country} value={c.id_country}>
+                          {c.country_name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div className="form-group">
+                    <select
+                      className="form-select"
+                      value={selectedState || ""}
+                      onChange={(e) => handleStateChange(e)}
+                      disabled={!selectedCountry}
+                    >
+                      <option value="" disabled>-- Selecciona un estado </option>
+                      {state.map((st) => (
+                        <option key={st.id_state} value={st.id_state}>
+                          {st.state_name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div className="form-group">
+                    <select
+                      className="form-select"
+                      value={selectedMuni || ""}
+                      onChange={(e) => handleMunicipalityChange(e)}
+                      disabled={!selectedState}
+                    >
+                      <option value="" disabled>-- Selecciona un municipio</option>
+                      {muni.map((m) => (
+                        <option key={m.id_municipality} value={m.id_municipality}>
+                          {m.municipality_name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div className="form-group">
+                    <select
+                      className="form-select"
+                      value={selectedParish || ""}
+                      onChange={(e) => handleParishChange(e)}
+                      disabled={!selectedMuni}
+                    >
+                      <option value="" disabled>-- Selecciona una parroquia</option>
+                      {parish.map((p) => (
+                        <option key={p.id_parish} value={p.id_parish}>
+                          {p.parish_name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div className="form-group" style={{ flex: "1 1 100%" }}>
+                    <select
+                      className="form-select"
+                      value={selectedInstitution || ""}
+                      onChange={(e) => setSelectedInstitution(e.target.value)}
+                      disabled={!selectedParish}
+                    >
+                      <option value="" disabled>-- Selecciona una institución</option>
+                      {institutions.map((inst) => (
+                        <option key={inst.id_insti} value={inst.id_insti}>
+                          {inst.insti_name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
                 </div>
-            
-                <div className="form-group">
-                  <select
-                    className="form-select"
-                    value={selectedState || ""}
-                    onChange={(e) => handleStateChange(e)}
-                    disabled={!selectedCountry}
-                  >
-                    <option value="" disabled>-- Selecciona un estado </option>
-                    {state.map((st) => (
-                      <option key={st.id_state} value={st.id_state}>
-                        {st.state_name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-            
-                <div className="form-group">
-                  <select
-                    className="form-select"
-                    value={selectedMuni || ""}
-                    onChange={(e) => handleMunicipalityChange(e)}
-                    disabled={!selectedState}
-                  >
-                    <option value="" disabled>-- Selecciona un municipio</option>
-                    {muni.map((m) => (
-                      <option key={m.id_municipality} value={m.id_municipality}>
-                        {m.municipality_name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-            
-                <div className="form-group">
-                  <select
-                    className="form-select"
-                    value={selectedParish || ""}
-                    onChange={(e) => handleParishChange(e)}
-                    disabled={!selectedMuni}
-                  >
-                    <option value="" disabled>-- Selecciona una parroquia</option>
-                    {parish.map((p) => (
-                      <option key={p.id_parish} value={p.id_parish}>
-                        {p.parish_name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-            
-                <div className="form-group" style={{ flex: "1 1 100%" }}>
-                  <select
-                    className="form-select"
-                    value={selectedInstitution || ""}
-                    onChange={(e) => setSelectedInstitution(e.target.value)}
-                    disabled={!selectedParish}
-                  >
-                    <option value="" disabled>-- Selecciona una institución</option>
-                    {institutions.map((inst) => (
-                      <option key={inst.id_insti} value={inst.id_insti}>
-                        {inst.insti_name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-            </>
-            
+              </>
+
             )}
 
             {step === 3 && (
@@ -387,16 +443,46 @@ function SelectRole({ show, handleClose, handleRoleChange }) {
                     accept="image/*"
                     onChange={(e) => {
                       const file = e.target.files[0];
-                      setSelectedImage(file);
                       if (file) {
+                        // Validación básica de tamaño (ej: 5MB)
+                        if (file.size > 5 * 1024 * 1024) {
+                          notifyError("El archivo es demasiado grande. Máximo 5MB.");
+                          return;
+                        }
+                        // Validación básica de tipo (aunque 'accept' ya ayuda)
+                        if (!file.type.startsWith('image/')) {
+                          notifyError("Por favor, selecciona un archivo de imagen válido.");
+                          return;
+                        }
+                        setSelectedImage(file);
                         const reader = new FileReader();
                         reader.onloadend = () => setPreviewUrl(reader.result);
                         reader.readAsDataURL(file);
+                      } else {
+                        setSelectedImage(null);
+                        setPreviewUrl(null);
                       }
                     }}
                     style={{ display: "none" }}
                   />
                 </div>
+                {/* Botón para quitar la imagen seleccionada */}
+                {previewUrl && (
+                  <button
+                    className="btn btn-sm btn-outline-danger mt-2"
+                    onClick={() => {
+                      setSelectedImage(null);
+                      setPreviewUrl(null);
+                      // Resetear el input file para poder seleccionar la misma imagen de nuevo si se desea
+                      const inputFile = document.getElementById('file-upload');
+                      if (inputFile) {
+                        inputFile.value = "";
+                      }
+                    }}
+                  >
+                    Quitar Imagen
+                  </button>
+                )}
               </>
             )}
 
@@ -405,21 +491,22 @@ function SelectRole({ show, handleClose, handleRoleChange }) {
                 <h4 className="mb-2">¡Tu perfil está casi listo!</h4>
                 <div className="user-summary-card">
                   <img
-                    src={userData.user_url}
+                    src={previewUrl || logo} // Mostrar logo si no hay preview
                     alt="Foto de perfil"
                     className="summary-img"
                   />
                   <div className="summary-info">
                     <p>
-                      <strong>Nombre:</strong> {userData.full_name}
+                      <strong>Nombre:</strong> {userData?.full_name || 'Usuario'}
                     </p>
+                    {/* ----- CAMBIO 6: Mostrar el nombre del rol usando la función auxiliar ----- */}
                     <p>
-                      <strong>Rol:</strong> {selectedRole}
+                      <strong>Rol:</strong> {getRoleNameById(selectedRoleId)}
                     </p>
                     <p>
                       <strong>Institución: </strong>
                       {institutions.find(
-                        (inst) => inst.id_insti === selectedInstitution
+                        (inst) => inst.id_insti == selectedInstitution // Usar == para comparación flexible si id_insti es string
                       )?.insti_name || "Sin nombre"}
                     </p>
                   </div>
@@ -430,16 +517,21 @@ function SelectRole({ show, handleClose, handleRoleChange }) {
 
           {/* Botonera fija al fondo */}
           <div className="d-flex justify-content-between mt-4">
+            {/* Mostrar 'Atrás' solo si no estamos en el primer paso */}
             {step > 1 && (
               <button className="btn-back" onClick={handleBack}>
                 Atrás
               </button>
             )}
+            {/* Asegurar que el botón 'Atrás' no empuje al 'Siguiente'/'Confirmar' cuando está solo */}
+            {step === 1 && <div style={{ width: '80px' }}></div> /* Placeholder para mantener alineación */}
+
             {step < 4 && (
               <button
                 className="btn-next ms-auto"
+                // ----- CAMBIO 7: Actualizar condición disabled para el paso 1 -----
                 disabled={
-                  (step === 1 && !selectedRole) ||
+                  (step === 1 && !selectedRoleId) || // Usar selectedRoleId
                   (step === 2 && !selectedInstitution)
                 }
                 onClick={handleNext}
