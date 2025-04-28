@@ -7,13 +7,12 @@ export const ClassContext = createContext();
 export const ClassProvider = ({ children }) => {
     const [classes, setClasses] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [token, setToken] = useState(localStorage.getItem('token') || null);
 
     const fetchClasses = async () => {
         try {
-            const token = localStorage.getItem("token");
-
             if (!token) {
-                setClasses([]); 
+                setClasses([]);
                 setLoading(false);
                 return;
             }
@@ -29,7 +28,7 @@ export const ClassProvider = ({ children }) => {
             setClasses(response.data.classes || []);
         } catch (error) {
             console.error("Error fetching classes:", error);
-            setClasses([]); 
+            setClasses([]);
         } finally {
             setLoading(false);
         }
@@ -40,11 +39,15 @@ export const ClassProvider = ({ children }) => {
     };
 
     useEffect(() => {
+        alert("buenas")
         fetchClasses();
+    }, [token]);
 
+    useEffect(() => {
+        
         const handleStorageChange = (e) => {
             if (e.key === "token") {
-                fetchClasses();
+                setToken(e.newValue);
             }
         };
         window.addEventListener("storage", handleStorageChange);
@@ -52,10 +55,10 @@ export const ClassProvider = ({ children }) => {
         return () => {
             window.removeEventListener("storage", handleStorageChange);
         };
-    }, [localStorage.getItem("token")]);
+    }, []);
 
     return (
-        <ClassContext.Provider value={{ classes, setClasses, loading, fetchClasses, addClass }}>
+        <ClassContext.Provider value={{ classes, setClasses, loading, fetchClasses, addClass, setToken }}>
             {children}
         </ClassContext.Provider>
     );

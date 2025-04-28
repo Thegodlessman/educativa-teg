@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useContext} from "react";
 import { Form, Button, Container, Row, Col, Alert } from 'react-bootstrap';
 import axios from "axios";
 
 import { notifyError, notifySuccess } from '../../utils/notify';
 import { useNavigate } from "react-router-dom";
+import { ClassContext } from "../../context/ClassContext";
 
 import './LoginForm.css';
 
@@ -12,8 +13,8 @@ function LoginForm() {
     const [user_email, setEmail] = useState('');
     const [user_password, setPassword] = useState('');
     const [errors, setErrors] = useState({});
-    const [loginError, setLoginError] = useState('');
     const [pressButton, setPressButton] = useState(false);
+    const { setToken } = useContext(ClassContext)
 
     const validateForm = () => {
         const newErrors = {};
@@ -30,28 +31,39 @@ function LoginForm() {
 
         if (Object.keys(formErrors).length > 0) {
             setErrors(formErrors);
+            setPressButton(false); 
         } else {
             setErrors({});
-            setPressButton(true)
+            setPressButton(true);
 
             setTimeout(async () => {
-                try{
+                try {
                     const response = await axios.post('http://localhost:4555/login', { user_email, user_password });
+
+                    // Verifica si la respuesta y la propiedad token existen
+                    if (response.data && response.data.tokenSession) {
+                        const { tokenSession } = response.data;
+
+                        localStorage.setItem('token', tokenSession);
+                        setToken(tokenSession); // <--- Actualizar el token en el contexto
+
+                        notifySuccess("Se ha iniciado sesion correctamente");
+                        navigate("/profile");
+
+                    } else {
+                        // Manejar caso donde la respuesta es exitosa (2xx) pero no viene el token esperado
+                        notifyError("Respuesta inesperada del servidor al iniciar sesión.");
+                        setPressButton(false); 
+                    }
+
+                } catch (error) {
+                    setPressButton(false); 
+                    const errorMessage = error.response?.data?.message || "Error al conectar con el servidor.";
+                    notifyError(errorMessage);
                     
-                    const {tokenSession} = response.data;
-    
-                    localStorage.setItem('token', tokenSession);
-
-                    notifySuccess("Se ha iniciado sesion correctamente")
-    
-                    navigate("/profile")
-                }catch(error){
-                    setPressButton(false)
-                    notifyError(error.response.data.message)
-                    setLoginError(error.response.data.message);
+                    console.error("Error en login:", error.response || error);
                 }
-
-            }, 1500);
+            }, 1500); 
         }
     };
 
