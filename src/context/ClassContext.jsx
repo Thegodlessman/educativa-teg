@@ -39,7 +39,6 @@ export const ClassProvider = ({ children }) => {
     };
 
     useEffect(() => {
-        alert("buenas")
         fetchClasses();
     }, [token]);
 
