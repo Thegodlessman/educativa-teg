@@ -25,3 +25,96 @@
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
   cursor: pointer;
 }
+
+/* Estilos específicos para la tabla de estudiantes evaluados */
+.evaluated-students-table {
+  border: 1px solid var(--secondary-color);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.evaluated-students-table thead {
+  background-color: var(--primary-color);
+  color: white;
+  text-align: center;
+  font-weight: bold;
+}
+
+.evaluated-students-table tbody tr {
+  transition: background-color 0.3s ease;
+}
+
+.evaluated-students-table tbody tr:hover {
+  background-color: var(--secondary-color);
+  color: white;
+}
+
+.evaluated-students-table td, 
+.evaluated-students-table th {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.evaluated-students-table td {
+  background-color: #ffffff;
+}
+
+/* Estilizar el mensaje cuando no hay estudiantes */
+.no-students-row {
+  background-color: #f8f9fa;
+  color: #6c757d;
+  font-style: italic;
+}
+
+.custom-back-button {
+  background-color: var(--secondary-color);
+  border: none;
+  padding: 10px 20px;
+  font-weight: bold;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  border-radius: 8px;
+}
+
+.custom-back-button:hover {
+  background-color: var(--primary-color);
+  transform: scale(1.05);
+}
+
+.custom-back-button {
+  background-color: var(--secondary-color);
+  border: none;
+  padding: 10px 20px;
+  font-weight: bold;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  border-radius: 8px;
+}
+
+.custom-back-button:hover {
+  background-color: var(--primary-color);
+  transform: scale(1.05);
+}
+
+.fade-in {
+  animation: fadeInAnimation 0.5s ease forwards;
+}
+
+@keyframes fadeInAnimation {
+  0% {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
