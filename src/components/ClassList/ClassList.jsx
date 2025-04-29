@@ -1,74 +1,32 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { ClassContext } from "../../context/ClassContext";
 import { Card, Spinner, Button, Table } from "react-bootstrap";
 import { BsArrowLeft } from "react-icons/bs";
-
 import './ClassList.css';
 
 function ClassList() {
   const { classes, loading } = useContext(ClassContext);
   const [selectedRoom, setSelectedRoom] = useState(null);
+  const [studentsEvaluated, setStudentsEvaluated] = useState([]);
+  const [loadingStudents, setLoadingStudents] = useState(false);
 
-  // Mock de estudiantes evaluados (después lo traeremos del backend)
-  const studentsEvaluated = [
-    {
-      id_user: "1",
-      name: "Juan Pérez",
-      final_score: 85.5,
-      risk_name: "Poco probable",
-    },
-    {
-      id_user: "2",
-      name: "María Gómez",
-      final_score: 65.2,
-      risk_name: "Probable",
-    },
-    {
-      id_user: "3",
-      name: "Carlos Sánchez",
-      final_score: 45.7,
-      risk_name: "Muy probable",
-    },{
-      id_user: "4",
-      name: "Juan Pérez",
-      final_score: 85.5,
-      risk_name: "Poco probable",
-    },
-    {
-      id_user: "5",
-      name: "María Gómez",
-      final_score: 65.2,
-      risk_name: "Probable",
-    },
-    {
-      id_user: "6",
-      name: "Carlos Sánchez",
-      final_score: 45.7,
-      risk_name: "Muy probable",
-    },{
-      id_user: "7",
-      name: "Juan Pérez",
-      final_score: 85.5,
-      risk_name: "Poco probable",
-    },
-    {
-      id_user: "8",
-      name: "María Gómez",
-      final_score: 65.2,
-      risk_name: "Probable",
-    },
-    {
-      id_user: "9",
-      name: "Carlos Sánchez",
-      final_score: 45.7,
-      risk_name: "Muy probable",
-    },{
-      id_user: "10",
-      name: "Juan Pérez",
-      final_score: 85.5,
-      risk_name: "Poco probable",
-    },
-  ];
+  useEffect(() => {
+    if (selectedRoom) {
+      setLoadingStudents(true);
+
+      fetch(`${import.meta.env.VITE_BACKEND_URL}test/room/${selectedRoom.id_room}`)
+        .then((res) => {
+          if (!res.ok) throw new Error("Error al obtener estudiantes");
+          return res.json();
+        })
+        .then((data) => setStudentsEvaluated(data))
+        .catch((err) => {
+          console.error("Error al cargar estudiantes evaluados:", err);
+          setStudentsEvaluated([]);
+        })
+        .finally(() => setLoadingStudents(false));
+    }
+  }, [selectedRoom]);
 
   if (loading) {
     return (
@@ -92,6 +50,7 @@ function ClassList() {
 
   const handleBackToClassList = () => {
     setSelectedRoom(null);
+    setStudentsEvaluated([]);
   };
 
   return (
@@ -122,7 +81,7 @@ function ClassList() {
           ))}
         </div>
       ) : (
-        <div>
+        <div className="fade-in">
           <Button onClick={handleBackToClassList} className="mb-4 custom-back-button">
             <BsArrowLeft /> Volver a la lista de clases
           </Button>
@@ -130,36 +89,47 @@ function ClassList() {
           <h2 className="mb-4">{selectedRoom.room_grate} "{selectedRoom.secc_room.trim()}" - {selectedRoom.insti_name}</h2>
 
           <div className="bg-white p-4 shadow rounded">
-            {/* Tabla de estudiantes evaluados */}
-            <Table striped bordered hover responsive className="evaluated-students-table">
-              <thead className="table-dark">
-                <tr>
-                  <th>#</th>
-                  <th>Nombre del estudiante</th>
-                  <th>Nota final</th>
-                  <th>Nivel de riesgo</th>
-                </tr>
-              </thead>
-              <tbody>
-                {studentsEvaluated.length === 0 ? (
+            {loadingStudents ? (
+              <div className="text-center">
+                <Spinner animation="border" />
+              </div>
+            ) : (
+              <Table striped bordered hover responsive className="evaluated-students-table">
+                <thead className="table-dark">
                   <tr>
-                    <td colSpan="4" className="text-center no-students-row">
-                    No hay estudiantes evaluados en esta clase.</td>
+                    <th>#</th>
+                    <th>Nombre del estudiante</th>
+                    <th>Nota final</th>
+                    <th>Nivel de riesgo</th>
                   </tr>
-                ) : (
-                  studentsEvaluated.map((student, index) => (
-                    <tr key={student.id_user}>
-                      <td>{index + 1}</td>
-                      <td>{student.name}</td>
-                      <td>{student.final_score}</td>
-                      <td>{student.risk_name}</td>
+                </thead>
+                <tbody>
+                  {studentsEvaluated.length === 0 ? (
+                    <tr>
+                      <td colSpan="4" className="text-center no-students-row">
+                        No hay estudiantes evaluados en esta clase.
+                      </td>
                     </tr>
-                  ))
-                )}
-              </tbody>
-            </Table>
+                  ) : (
+                    studentsEvaluated.map((student, index) => (
+                      <tr key={student.id_user}>
+                        <td>{index + 1}</td>
+                        <td>{student.student_name}</td>
+                        <td>
+                          {student.final_score !== null
+                            ? student.final_score
+                            : <span className="not-test">Prueba no completa</span>}
+                        </td>
+                        <td>
+                          {student.risk_name || <span className="text-muted">—</span>}
+                        </td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              </Table>
+            )}
 
-            {/* Mostrar ID de Room (para debugging) */}
             <p className="text-muted">ID de Room: {selectedRoom.id_room}</p>
           </div>
         </div>

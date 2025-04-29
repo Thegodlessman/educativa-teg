@@ -4,25 +4,18 @@ import { FaHome, FaBook, FaCogs, FaSignOutAlt } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { notifySuccess } from '../../utils/notify';
 import CreateRoom from '../CreateRoom/CreateRoom';
-// Asegúrate de importar setToken también
 import { ClassContext } from "../../context/ClassContext";
 
 function Sidebar() {
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
-  // Obtén setToken del contexto
-  const { classes, setToken } = useContext(ClassContext); // Ya no necesitas setClasses aquí
+  const { classes, setToken } = useContext(ClassContext); 
 
   const handleLogout = () => {
-    // 1. Elimina el token de localStorage
     localStorage.removeItem('token');
 
-    // 2. Actualiza el estado del token en el contexto a null
-    // Esto disparará el useEffect en ClassProvider que llama a fetchClasses,
-    // y fetchClasses limpiará las clases porque el token es null.
     setToken(null);
 
-    // 3. Notifica y navega
     notifySuccess("Se ha cerrado sesión");
     navigate('/login');
   };

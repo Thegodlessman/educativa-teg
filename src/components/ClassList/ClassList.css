@@ -104,17 +104,8 @@
   transform: scale(1.05);
 }
 
-.fade-in {
-  animation: fadeInAnimation 0.5s ease forwards;
-}
-
-@keyframes fadeInAnimation {
-  0% {
-    opacity: 0;
-    transform: scale(0.98);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
+.not-test{
+  padding: 10px;
+  color: gray;
+  font-weight: bold;
 }
