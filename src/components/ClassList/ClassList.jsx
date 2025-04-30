@@ -118,7 +118,7 @@ function ClassList() {
                         <td>
                           {student.final_score !== null
                             ? student.final_score
-                            : <span className="not-test">Prueba no completa</span>}
+                            : <span className="not-test">Prueba pendiente</span>}
                         </td>
                         <td>
                           {student.risk_name || <span className="text-muted">—</span>}

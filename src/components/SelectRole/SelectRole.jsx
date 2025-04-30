@@ -487,7 +487,7 @@ function SelectRole({ show, handleClose, handleRoleChange }) {
                 <h4 className="mb-2">¡Tu perfil está casi listo!</h4>
                 <div className="user-summary-card">
                   <img
-                    src={previewUrl || logo}
+                    src={previewUrl || userData.user_url}
                     alt="Foto de perfil"
                     className="summary-img"
                   />
