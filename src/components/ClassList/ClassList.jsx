@@ -82,7 +82,7 @@ function ClassList() {
         </div>
       ) : (
         <div className="fade-in">
-          <Button onClick={handleBackToClassList} className="mb-4 custom-back-button">
+          <Button onClick={handleBackToClassList} variant="success" className="mb-4 custom-back-button">
             <BsArrowLeft /> Volver a la lista de clases
           </Button>
 

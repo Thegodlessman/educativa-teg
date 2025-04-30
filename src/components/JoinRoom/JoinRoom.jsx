@@ -31,9 +31,14 @@ function JoinRoom({ show, handleClose }) {
             setRoomCode("")
             handleClose();
         } catch (error) {
-            notifyError("Ocurrió un error al unirse a la clase");
+            if (error.response && error.response.data && error.response.data.message) {
+                notifyError(error.response.data.message);
+            } else {
+                notifyError("Ocurrió un error al unirse a la clase");
+            }
             console.error("Error al unirse a la clase:", error);
         }
+
     };
 
     return (
@@ -55,7 +60,7 @@ function JoinRoom({ show, handleClose }) {
                 </Form>
             </Modal.Body>
             <Modal.Footer className="d-flex justify-content-between">
-                <Button className='button_create-class' onClick={handleJoin}>
+                <Button variant='success' className='button_create-class' onClick={handleJoin}>
                     Unirse
                 </Button>
             </Modal.Footer>
