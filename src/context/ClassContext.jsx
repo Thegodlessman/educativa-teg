@@ -7,21 +7,40 @@ export const ClassContext = createContext();
 export const ClassProvider = ({ children }) => {
     const [classes, setClasses] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [token, setToken] = useState(localStorage.getItem('token') || null);
 
     const fetchClasses = async () => {
         try {
-            const token = localStorage.getItem("token");
+            if (!token) {
+                setClasses([]);
+                setLoading(false);
+                return;
+            }
+
             const decoded = jwt_decode(token);
+            const {id_user, rol_name} = decoded
+            let endpoint = ""
+
+            if(rol_name === "Profesor"){
+                endpoint = `${import.meta.env.VITE_BACKEND_URL}room/classes/created`
+            }else if(rol_name === "Estudiante"){
+                endpoint = `${import.meta.env.VITE_BACKEND_URL}room/classes/joined`
+            } else {
+                setClasses([]);
+                setLoading(false);
+                return;
+            }
 
             const response = await axios.post(
-                "http://localhost:4555/room/classes",
-                { id_user: decoded.id_user },
+                endpoint,
+                { id_user: id_user },
                 { headers: { Authorization: `Bearer ${token}` } }
             );
 
             setClasses(response.data.classes || []);
         } catch (error) {
             console.error("Error fetching classes:", error);
+            setClasses([]);
         } finally {
             setLoading(false);
         }
@@ -33,10 +52,24 @@ export const ClassProvider = ({ children }) => {
 
     useEffect(() => {
         fetchClasses();
+    }, [token]);
+
+    useEffect(() => {
+        
+        const handleStorageChange = (e) => {
+            if (e.key === "token") {
+                setToken(e.newValue);
+            }
+        };
+        window.addEventListener("storage", handleStorageChange);
+
+        return () => {
+            window.removeEventListener("storage", handleStorageChange);
+        };
     }, []);
 
     return (
-        <ClassContext.Provider value={{ classes, loading, fetchClasses, addClass }}>
+        <ClassContext.Provider value={{ classes, setClasses, loading, fetchClasses, addClass, setToken }}>
             {children}
         </ClassContext.Provider>
     );

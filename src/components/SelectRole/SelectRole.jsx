@@ -268,8 +268,6 @@ function SelectRole({ show, handleClose, handleRoleChange }) {
     setSelectedInstitution(null);
     setInstitutions([]);
   };
-
-  // ----- CAMBIO 4: Función auxiliar para obtener el nombre del rol a partir del ID -----
   const getRoleNameById = (roleId) => {
     const role = roles.find(r => r.id_rol === roleId);
     return role ? role.rol_name : "Desconocido";
@@ -303,7 +301,6 @@ function SelectRole({ show, handleClose, handleRoleChange }) {
                     roles.map((role) => (
                       <div
                         key={role.id_rol}
-                        // ----- CAMBIO 5: Actualizar la clase 'selected' y el onClick -----
                         className={`role-selection ${selectedRoleId === role.id_rol ? "selected-role" : "" // Comparar con selectedRoleId
                           }`}
                         onClick={() => setSelectedRoleId(role.id_rol)} // Almacenar el id_rol
@@ -473,7 +470,6 @@ function SelectRole({ show, handleClose, handleRoleChange }) {
                     onClick={() => {
                       setSelectedImage(null);
                       setPreviewUrl(null);
-                      // Resetear el input file para poder seleccionar la misma imagen de nuevo si se desea
                       const inputFile = document.getElementById('file-upload');
                       if (inputFile) {
                         inputFile.value = "";
@@ -491,7 +487,7 @@ function SelectRole({ show, handleClose, handleRoleChange }) {
                 <h4 className="mb-2">¡Tu perfil está casi listo!</h4>
                 <div className="user-summary-card">
                   <img
-                    src={previewUrl || logo} // Mostrar logo si no hay preview
+                    src={previewUrl || userData.user_url}
                     alt="Foto de perfil"
                     className="summary-img"
                   />
@@ -499,14 +495,13 @@ function SelectRole({ show, handleClose, handleRoleChange }) {
                     <p>
                       <strong>Nombre:</strong> {userData?.full_name || 'Usuario'}
                     </p>
-                    {/* ----- CAMBIO 6: Mostrar el nombre del rol usando la función auxiliar ----- */}
                     <p>
                       <strong>Rol:</strong> {getRoleNameById(selectedRoleId)}
                     </p>
                     <p>
                       <strong>Institución: </strong>
                       {institutions.find(
-                        (inst) => inst.id_insti == selectedInstitution // Usar == para comparación flexible si id_insti es string
+                        (inst) => inst.id_insti == selectedInstitution
                       )?.insti_name || "Sin nombre"}
                     </p>
                   </div>
@@ -517,21 +512,17 @@ function SelectRole({ show, handleClose, handleRoleChange }) {
 
           {/* Botonera fija al fondo */}
           <div className="d-flex justify-content-between mt-4">
-            {/* Mostrar 'Atrás' solo si no estamos en el primer paso */}
             {step > 1 && (
               <button className="btn-back" onClick={handleBack}>
                 Atrás
               </button>
             )}
-            {/* Asegurar que el botón 'Atrás' no empuje al 'Siguiente'/'Confirmar' cuando está solo */}
-            {step === 1 && <div style={{ width: '80px' }}></div> /* Placeholder para mantener alineación */}
-
+            {step === 1 && <div style={{ width: '80px' }}></div> }
             {step < 4 && (
               <button
                 className="btn-next ms-auto"
-                // ----- CAMBIO 7: Actualizar condición disabled para el paso 1 -----
                 disabled={
-                  (step === 1 && !selectedRoleId) || // Usar selectedRoleId
+                  (step === 1 && !selectedRoleId) ||
                   (step === 2 && !selectedInstitution)
                 }
                 onClick={handleNext}
