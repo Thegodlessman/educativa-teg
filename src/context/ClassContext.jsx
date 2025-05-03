@@ -18,10 +18,22 @@ export const ClassProvider = ({ children }) => {
             }
 
             const decoded = jwt_decode(token);
+            const {id_user, rol_name} = decoded
+            let endpoint = ""
+
+            if(rol_name === "Profesor"){
+                endpoint = `${import.meta.env.VITE_BACKEND_URL}room/classes/created`
+            }else if(rol_name === "Estudiante"){
+                endpoint = `${import.meta.env.VITE_BACKEND_URL}room/classes/joined`
+            } else {
+                setClasses([]);
+                setLoading(false);
+                return;
+            }
 
             const response = await axios.post(
-                "http://localhost:4555/room/classes",
-                { id_user: decoded.id_user },
+                endpoint,
+                { id_user: id_user },
                 { headers: { Authorization: `Bearer ${token}` } }
             );
 
