@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import jwtDecode from 'jwt-decode';
 import axios from 'axios'
+import { ClassContext } from '../../context/ClassContext';
 
 import './JoinRoom.css'
 import { notifyError, notifySuccess } from '../../utils/notify';
@@ -54,7 +55,7 @@ function JoinRoom({ show, handleClose }) {
                             className="input-code"
                             placeholder=""
                             value={roomCode}
-                            onChange={(e) => setRoomCode(e.target.value)}
+                            onChange={(e) => setRoomCode(e.target.value.toUpperCase())}
                         />
                     </Form.Group>
                 </Form>

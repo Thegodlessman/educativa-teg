@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import DashboardLayout from "../../layout/DashboardLayout/DashboardLayout.jsx";
+import DashboardLayout from "../../layout/DashboardLayout.jsx";
 import ClassList from "../../components/ClassList/ClassList.jsx";
 import SelectRole from "../../components/SelectRole/SelectRole.jsx";
 import jwt_decode from "jwt-decode";
