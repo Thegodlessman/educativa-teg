@@ -8,17 +8,20 @@ export const ClassProvider = ({ children }) => {
     const [classes, setClasses] = useState([]);
     const [loading, setLoading] = useState(true);
     const [token, setToken] = useState(localStorage.getItem('token') || null);
+    const [userData, setUserData] = useState(null);
 
     const fetchClasses = async () => {
         try {
             if (!token) {
                 setClasses([]);
                 setLoading(false);
+                setUserData(null)
                 return;
             }
 
             const decoded = jwt_decode(token);
             const {id_user, rol_name} = decoded
+            setUserData( {id_user, rol_name})
             let endpoint = ""
 
             if(rol_name === "Profesor"){
@@ -28,6 +31,7 @@ export const ClassProvider = ({ children }) => {
             } else {
                 setClasses([]);
                 setLoading(false);
+                setUserData(null)
                 return;
             }
 
@@ -41,6 +45,7 @@ export const ClassProvider = ({ children }) => {
         } catch (error) {
             console.error("Error fetching classes:", error);
             setClasses([]);
+            setUserData(null)
         } finally {
             setLoading(false);
         }
@@ -69,7 +74,7 @@ export const ClassProvider = ({ children }) => {
     }, []);
 
     return (
-        <ClassContext.Provider value={{ classes, setClasses, loading, fetchClasses, addClass, setToken }}>
+        <ClassContext.Provider value={{ userData, classes, setClasses, loading, fetchClasses, addClass, setToken }}>
             {children}
         </ClassContext.Provider>
     );
