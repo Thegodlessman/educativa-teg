@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import jwtDecode from 'jwt-decode';
 import axios from 'axios'
@@ -11,6 +11,8 @@ function JoinRoom({ show, handleClose }) {
     const [roomCode, setRoomCode] = useState('');
     const token = localStorage.getItem('token')
     const decodedToken = jwtDecode(token)
+
+    const { addClass } = useContext(ClassContext)
 
     const handleJoin = async () => {
         try {
@@ -28,16 +30,21 @@ function JoinRoom({ show, handleClose }) {
                 , { headers: { Authorization: `Bearer ${token}` } }
             )
 
-            notifySuccess("Te has unido a la clase")
-            setRoomCode("")
-            handleClose();
+            if(response.data.classes){
+                const nuevaClase = response.data.classes
+
+                notifySuccess("Te has unido a la clase")
+                addClass(nuevaClase)
+                setRoomCode("")
+                handleClose();
+            }
         } catch (error) {
             if (error.response && error.response.data && error.response.data.message) {
                 notifyError(error.response.data.message);
             } else {
                 notifyError("Ocurrió un error al unirse a la clase");
             }
-            console.error("Error al unirse a la clase:", error);
+            notifyError("Error al unirse a la clase:", error);
         }
 
     };

@@ -6,7 +6,6 @@ import './ClassList.css';
 import GameTest from '../GameTest/GameTest';
 import axios from 'axios';
 
-
 function ClassList() {
   const { classes, loading, userData } = useContext(ClassContext);
   const [selectedRoom, setSelectedRoom] = useState(null);
@@ -102,8 +101,8 @@ function ClassList() {
     setStudentTestStatus(null);
     setLoadingTestStatusStudentView(false);
     setStartingTestStudentView(false);
-    setIsGameActive(false); 
-    setGameProps(null); 
+    setIsGameActive(false);
+    setGameProps(null);
   };
 
   const handleBackToClassList = () => {
@@ -114,7 +113,7 @@ function ClassList() {
     setLoadingTestStatusStudentView(false);
     setStartingTestStudentView(false);
     setIsGameActive(false);
-    setGameProps(null); 
+    setGameProps(null);
   };
 
   const handleStartTestStudent = async () => {
@@ -123,17 +122,17 @@ function ClassList() {
       return;
     }
 
-    setStartingTestStudentView(true); 
+    setStartingTestStudentView(true);
 
     try {
       const token = localStorage.getItem('token');
       const response = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}test/start-student-test`,
-        { userId: userData.id_user, roomId: selectedRoom.id_room },
+        { id_user: userData.id_user, id_room: selectedRoom.id_room },
         { headers: { 'Authorization': `Bearer ${token}` } }
       );
 
-      const testId = response.data.testId; 
+      const testId = response.data.testId;
 
       if (!testId) {
         throw new Error("El backend no devolvió un ID de prueba válido.");
@@ -153,25 +152,16 @@ function ClassList() {
         alert(`No se pudo iniciar la prueba: ${error.message}`);
       }
     } finally {
-      setStartingTestStudentView(false); 
+      setStartingTestStudentView(false);
     }
   };
 
   const handleGameEnd = () => {
     console.log("Juego finalizado.");
-    setIsGameActive(false); 
+    setIsGameActive(false);
     setGameProps(null);
     setSelectedRoom(prev => prev ? { ...prev } : null);
   };
-
-  if (isGameActive && gameProps) {
-    return (
-      <GameTest
-        {...gameProps} 
-        onGameEnd={handleGameEnd} 
-      />
-    );
-  }
 
   return (
     <div className="container mt-4">
@@ -293,7 +283,7 @@ function ClassList() {
 
                     <Button
                       variant="primary"
-                      onClick={handleStartTestStudent} // Enlaza el manejador aquí
+                      onClick={handleStartTestStudent}
                       disabled={startingTestStudentView}
                       className="mt-3"
                     >
@@ -311,6 +301,18 @@ function ClassList() {
                 <h4>No se pudo cargar la información de la clase. Rol de usuario desconocido.</h4>
               </div>
             )}
+          </div>
+        </div>
+      )}
+
+      {/* Ventana de juego */}
+      {isGameActive && gameProps && (
+        <div className="game-modal-overlay"> 
+          <div className="game-modal-content"> 
+            <GameTest
+              {...gameProps} 
+              onGameEnd={handleGameEnd} 
+            />
           </div>
         </div>
       )}
