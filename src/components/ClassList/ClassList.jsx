@@ -3,6 +3,7 @@ import { ClassContext } from "../../context/ClassContext";
 import { Card, Spinner, Button, Table } from "react-bootstrap";
 import { BsArrowLeft } from "react-icons/bs";
 import './ClassList.css';
+import {notifyError, notifySuccess, notifyWarning} from '../../utils/notify.js'
 import GameTest from '../GameTest/GameTest';
 import axios from 'axios';
 
@@ -33,7 +34,7 @@ function ClassList() {
         axios.get(`${import.meta.env.VITE_BACKEND_URL}test/room/${selectedRoom.id_room}`)
           .then((res) => setStudentsEvaluated(res.data))
           .catch((err) => {
-            console.error("Error al cargar estudiantes evaluados:", err);
+            notifyError("Error al cargar estudiantes evaluados:", err);
             setStudentsEvaluated([]);
           })
           .finally(() => setLoadingStudentsTeacherView(false));
@@ -118,7 +119,7 @@ function ClassList() {
 
   const handleStartTestStudent = async () => {
     if (!selectedRoom || !userData?.id_user || startingTestStudentView) {
-      console.warn("No se puede iniciar la prueba: condiciones no cumplidas.");
+      notifyWarning("No se puede iniciar la prueba: condiciones no cumplidas.");
       return;
     }
 
@@ -138,7 +139,7 @@ function ClassList() {
         throw new Error("El backend no devolvió un ID de prueba válido.");
       }
 
-      console.log("Prueba iniciada con éxito. ID:", testId);
+      notifySuccess("Prueba iniciada con éxito. ID:", testId);
 
       setGameProps({ testId: testId, userId: userData.id_user });
       setIsGameActive(true);
@@ -147,9 +148,18 @@ function ClassList() {
       console.error("Error al iniciar la prueba:", error);
       if (error.response) {
         const errorMessage = error.response.data?.message || `Error HTTP ${error.response.status}`;
-        alert(`No se pudo iniciar la prueba: ${errorMessage}`);
+        
+        // --- Manejo específico para el error 409 CONFLICT ---
+        if (error.response.status === 409) {
+            notifyWarning(`La prueba ya fue iniciada o completada para esta clase. Se actualizará el estado.`);
+            // Forzar una recarga del estado de la prueba del estudiante
+            setSelectedRoom(prev => ({ ...prev })); // Esto dispara el useEffect para volver a consultar /test/status
+        } else {
+            // Manejo de otros errores (400, 500, etc.)
+            notifyError(`No se pudo iniciar la prueba: ${errorMessage}`);
+        }
       } else {
-        alert(`No se pudo iniciar la prueba: ${error.message}`);
+        notifyError(`No se pudo iniciar la prueba: ${error.message}`);
       }
     } finally {
       setStartingTestStudentView(false);
@@ -157,7 +167,7 @@ function ClassList() {
   };
 
   const handleGameEnd = () => {
-    console.log("Juego finalizado.");
+    notifySuccess("Juego finalizado.");
     setIsGameActive(false);
     setGameProps(null);
     setSelectedRoom(prev => prev ? { ...prev } : null);
@@ -309,7 +319,7 @@ function ClassList() {
       {isGameActive && gameProps && (
         <div className="game-modal-overlay"> 
           <div className="game-modal-content"> 
-            <GameTest
+            <GameTest className="game-container"
               {...gameProps} 
               onGameEnd={handleGameEnd} 
             />
