@@ -5,7 +5,7 @@ import { notifySuccess } from '../../utils/notify';
 
 const generateUUID = () => crypto.randomUUID ? crypto.randomUUID() : ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c => (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16));
 
-function GameTest({ testId, userId, onGameEnd }) {
+function GameTest({ id_test_actual, userId, onGameEnd, id_room }) {
     const BACKEND_SOCKET_URL = import.meta.env.VITE_BACKEND_URL;
     const { socket, isConnected } = useSocket(BACKEND_SOCKET_URL);
 
@@ -34,7 +34,7 @@ function GameTest({ testId, userId, onGameEnd }) {
         bulletHeight: 15,
         bulletColor: 0xFFFF00,
         shootCooldown: 300,
-        bulletAngleStrength: 5,
+        bulletAngleStrength: 9,
         obstacleSpawnInterval: 1200,
         obstacleMoveSpeed: 5,
         obstacleWidth: 50,
@@ -62,8 +62,10 @@ function GameTest({ testId, userId, onGameEnd }) {
     const obstaclePool = useRef([]);
 
     const metrics = useRef({
-        gameSessionId: testId || generateUUID(),
-        userId: userId || 'anonymous',
+        id_test_para_actualizar: id_test_actual || null, 
+        gameSessionId: generateUUID(), 
+        userId: userId || 'anonymous_user', 
+        id_room: id_room || 'anonymous_room',   
         gameStartTime: null,
         gameEndTime: null,
         totalGameDuration: 0,
@@ -240,12 +242,27 @@ function GameTest({ testId, userId, onGameEnd }) {
         metrics.current.score = score;
 
         if (socket && isConnected) {
-            socket.emit('sendGameDataToBackend', metrics.current);
-            notify
+            socket.emit('submitGameTestResults', metrics.current);
         }
     };
 
     useEffect(() => {
+        gameEndedRef.current = false; 
+        metrics.current = { 
+            id_test_para_actualizar: id_test_actual || null, // Usar la prop
+            gameSessionId: generateUUID(),
+            userId: userId || 'anonymous_user',
+            id_room: id_room || 'anonymous_room',
+            gameStartTime: null,
+            gameEndTime: null,
+            totalGameDuration: 0,
+            score: 0,
+            error_count: 0,
+            correct_decisions: 0,
+            reactionTimes: [],
+            missedShots: 0,
+        };
+        setScore(0);
         const onKeyDown = (event) => {
             if (gameEndedRef.current) return;
             if ((event.code === 'ArrowLeft' || event.code === 'KeyA')) {
@@ -535,7 +552,7 @@ function GameTest({ testId, userId, onGameEnd }) {
             }
             endGameCleanupLogic();
         };
-    }, [testId, userId]);
+    }, [id_test_actual, userId, id_room]);
 
     const handleDebugEndGame = () => {
         if (gameEndedRef.current) return;

@@ -133,15 +133,18 @@ function ClassList() {
         { headers: { 'Authorization': `Bearer ${token}` } }
       );
 
-      const testId = response.data.testId;
+      const id_test_creado_en_backend = response.data.id_test; 
 
-      if (!testId) {
+      if (!id_test_creado_en_backend) {
         throw new Error("El backend no devolvió un ID de prueba válido.");
       }
 
-      notifySuccess("Prueba iniciada con éxito. ID:", testId);
+      notifySuccess("Prueba iniciada. Preparando juego...");
 
-      setGameProps({ testId: testId, userId: userData.id_user });
+      setGameProps({ 
+        id_test_actual: id_test_creado_en_backend, 
+        userId: userData.id_user,
+        id_room: selectedRoom.id_room});
       setIsGameActive(true);
 
     } catch (error) {
@@ -170,7 +173,9 @@ function ClassList() {
     notifySuccess("Juego finalizado.");
     setIsGameActive(false);
     setGameProps(null);
-    setSelectedRoom(prev => prev ? { ...prev } : null);
+    if (userData?.rol_name === "Estudiante" && selectedRoom) {
+      setSelectedRoom(prev => prev ? { ...prev } : null); 
+  }
   };
 
   return (
