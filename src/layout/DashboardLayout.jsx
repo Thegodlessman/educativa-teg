@@ -1,6 +1,6 @@
 import React from "react";
-import NavBar from "../../components/Navbar/Navbar";
-import Sidebar from "../../components/Sidebar/Sidebar";
+import NavBar from "../components/Navbar/Navbar";
+import Sidebar from "../components/Sidebar/Sidebar";
 
 import "./DashboardLayout.css";
 

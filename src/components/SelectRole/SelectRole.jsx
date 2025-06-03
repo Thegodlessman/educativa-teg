@@ -12,7 +12,7 @@ const teacherRole =
 const studentRole =
   import.meta.env.VITE_CLOUDNARY_IMAGE + "educativa/StudentRole";
 
-function SelectRole({ show, handleClose, handleRoleChange }) {
+function SelectRole({ show, handleClose}) {
   const [step, setStep] = useState(1);
   const [roles, setRoles] = useState([]);
   const [selectedRoleId, setSelectedRoleId] = useState(null);

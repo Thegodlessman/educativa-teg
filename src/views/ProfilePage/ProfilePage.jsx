@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import DashboardLayout from "../../layout/DashboardLayout/DashboardLayout.jsx";
+import DashboardLayout from "../../layout/DashboardLayout.jsx";
 import ClassList from "../../components/ClassList/ClassList.jsx";
 import SelectRole from "../../components/SelectRole/SelectRole.jsx";
 import jwt_decode from "jwt-decode";
@@ -35,31 +35,12 @@ function ProfilePage() {
 
    const handleClose = () => setShowModal(false);
 
-   const handleRoleChange = async (newRole) => {
-      try {
-         const token = localStorage.getItem('token');
-         const response = await axios.patch(
-            `http://localhost:4555/users/update/role/${userId}`,
-            { id_rol: newRole },
-            { headers: { Authorization: `Bearer ${token}` } }
-         );
-
-         localStorage.setItem('token', response.data.tokenSession);
-         setActiveRole(response.data.user.rol);
-         notifySuccess("Tu rol ha sido actualizado.");
-         handleClose();
-      } catch (error) {
-         notifyError("Error al actualizar el rol.");
-      }
-   };
-
    return (
       <DashboardLayout>
          <ClassList />
          <SelectRole
             show={showModal}
             handleClose={handleClose}
-            handleRoleChange={handleRoleChange}
          />
       </DashboardLayout>
    );
