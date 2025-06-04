@@ -1,6 +1,12 @@
 :root {
     --primary-color: #8552aa;
     --secondary-color: #157347;
+
+    --background-soft-grey: #f8f9fa;
+    --text-muted-color: #495057;
+    --border-color-light: #dee2e6;
+    --border-color-lighter: #e9ecef;
+    --background-hover-light: #f1f1f1;
 }
 
 .logo-title{

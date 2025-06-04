@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
-import useSocket from '../../hooks/useSocket'; // Asegúrate que la ruta sea correcta
+import useSocket from '../../hooks/useSocket'; 
 import * as PIXI from 'pixi.js';
-import { notifySuccess } from '../../utils/notify';
 
 const generateUUID = () => crypto.randomUUID ? crypto.randomUUID() : ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c => (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16));
 
@@ -40,8 +39,8 @@ function GameTest({ id_test_actual, userId, onGameEnd, id_room }) {
         obstacleWidth: 50,
         obstacleHeight: 30,
         obstacleColor: 0xFF0000,
-        minObstacleScale: 0.15,
-        initialObstacleScale: 0.15,
+        minObstacleScale: 0.05,
+        initialObstacleScale: 0,
         reactionZoneStartYRatio: 0.75,
     });
 
